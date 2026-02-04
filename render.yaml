@@ -17,8 +17,6 @@ services:
   - type: web
     name: coffeelab-api
     env: docker
-    plan: free
-    region: singapore
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     envVars:

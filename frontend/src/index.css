@@ -1,29 +1,86 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Recipes from './pages/Recipes';
-
-function App() {
-  return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-gray-50">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/recipes" element={<Recipes />} />
-            {/* 더 많은 라우트는 나중에 추가 */}
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
-  );
+/* Global Styles */
+:root {
+  --coffee-50: #fdf8f6;
+  --coffee-100: #f2e8e5;
+  --coffee-200: #eaddd7;
+  --coffee-300: #e0cec7;
+  --coffee-400: #d2bab0;
+  --coffee-500: #bfa094;
+  --coffee-600: #a18072;
+  --coffee-700: #977669;
+  --coffee-800: #846358;
+  --coffee-900: #43302b;
 }
 
-export default App;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Tailwind-like utilities */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background-color: var(--coffee-600);
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: var(--coffee-700);
+}
+
+.btn-secondary {
+  background-color: white;
+  color: var(--coffee-600);
+  border: 1px solid var(--coffee-600);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--coffee-100);
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--coffee-600);
+  box-shadow: 0 0 0 3px rgba(161, 128, 114, 0.1);
+}

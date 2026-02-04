@@ -2,6 +2,7 @@ services:
   # PostgreSQL Database
   - type: pserv
     name: coffeelab-db
+    env: docker
     plan: free
     region: singapore
     envVars:

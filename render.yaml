@@ -4,7 +4,6 @@ services:
     name: coffeelab-db
     env: docker
     plan: free
-    region: singapore
     envVars:
       - key: POSTGRES_USER
         value: coffeelab

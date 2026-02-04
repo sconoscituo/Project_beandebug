@@ -1,6 +1,6 @@
 services:
   # PostgreSQL Database
-  - type: postgres
+  - type: pserv
     name: coffeelab-db
     plan: free
     region: singapore

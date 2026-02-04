@@ -37,7 +37,6 @@ services:
     name: coffeelab-frontend
     env: static
     plan: free
-    region: singapore
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/dist
     routes:

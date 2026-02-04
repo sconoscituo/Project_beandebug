@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: coffeelab_db
+    environment:
+      POSTGRES_USER: coffeelab
+      POSTGRES_PASSWORD: coffeelab123
+      POSTGRES_DB: coffeelab_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coffeelab"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - coffeelab-network
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: coffeelab_api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://coffeelab:coffeelab123@db:5432/coffeelab_db
+      - SECRET_KEY=your-secret-key-change-this-in-production-min-32-chars-long
+      - APP_NAME=Bean Debug
+      - DEBUG=True
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - coffeelab-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: coffeelab_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - api
+    networks:
+      - coffeelab-network
+
+volumes:
+  postgres_data:
+
+networks:
+  coffeelab-network:
+    driver: bridge

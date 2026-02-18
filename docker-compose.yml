@@ -1,66 +1,53 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15-alpine
-    container_name: coffeelab_db
+    container_name: beandebug_db
     environment:
-      POSTGRES_USER: coffeelab
-      POSTGRES_PASSWORD: coffeelab123
-      POSTGRES_DB: coffeelab_db
+      POSTGRES_USER: beandebug
+      POSTGRES_PASSWORD: beandebug123
+      POSTGRES_DB: beandebug_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U coffeelab"]
+      test: ["CMD-SHELL", "pg_isready -U beandebug"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - coffeelab-network
+      - beandebug-network
 
   api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: coffeelab_api
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    volumes:
-      - ./backend:/app
+    image: beandebug-api
+    container_name: beandebug_api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://coffeelab:coffeelab123@db:5432/coffeelab_db
-      - SECRET_KEY=your-secret-key-change-this-in-production-min-32-chars-long
+      - DATABASE_URL=postgresql://beandebug:beandebug123@db:5432/beandebug_db
+      - SECRET_KEY=super-secret-key-change-this-in-production-min-32-chars
       - APP_NAME=Bean Debug
-      - DEBUG=True
+      - DEBUG=False
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - coffeelab-network
+      - beandebug-network
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    container_name: coffeelab_frontend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+    image: beandebug-frontend
+    container_name: beandebug_frontend
     ports:
-      - "5173:5173"
-    environment:
-      - VITE_API_URL=http://localhost:8000
+      - "80:80"
     depends_on:
       - api
     networks:
-      - coffeelab-network
+      - beandebug-network
 
 volumes:
   postgres_data:
 
 networks:
-  coffeelab-network:
+  beandebug-network:
     driver: bridge

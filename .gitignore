@@ -21,3 +21,5 @@ docker-compose.override.yml
 # OS
 .DS_Store
 Thumbs.db
+
+coffeelab-key.pem

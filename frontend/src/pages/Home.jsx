@@ -5,22 +5,12 @@ const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // requestAnimationFrame으로 다음 프레임에서 실행
     const timer = requestAnimationFrame(() => {
       setIsLoaded(true);
     });
     
     return () => cancelAnimationFrame(timer);
   }, []);
-
-  const categories = [
-    { name: 'Beans', icon: '☕', link: '/beans' },
-    { name: 'Recipes', icon: '📃', link: '/recipes' },
-    { name: 'Brew Guide', icon: '🛣️', link: '/guides' },
-    { name: 'Gear', icon: '⚙️', link: '/gears' },
-    { name: 'Articles', icon: '📰', link: '/articles' },
-    { name: 'Community', icon: '💬', link: '/community' },
-  ];
 
   const popularRecipes = [
     {
@@ -97,20 +87,18 @@ const Home = () => {
           }}>
             <h1>
               완벽한 한 잔을<br />
-                <span style={{ 
-                 color: '#00ff88', 
-                 fontFamily: "'Fira Code', monospace",
-                 background: '#1a1a1a',
-                 padding: '0.2rem 0.5rem',
-                 borderRadius: '4px'
-                 }}>
-                 {`<debug />`}
-                </span>
-                하다
+              <span style={{ 
+                color: '#00ff88', 
+                fontFamily: "'Fira Code', monospace",
+                fontSize: '1.5rem',
+              }}>
+                {`<debug />`}
+              </span>
+              하다
             </h1>
             <p>
-              입문자, 전문가 모두를 위한 커피 분석 플랫폼<br />
-              Bean Debug에서 완벽한 한 잔을 찾아보세요.
+              모두를 위한 커피 분석 플랫폼<br />
+              완벽한 한 잔을 위하여:{">"}
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
               <Link to="/recipes" className="btn-primary">
@@ -134,28 +122,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Category Navigation */}
-      <div style={{ background: '#ffffff', borderBottom: '1px solid #eee' }}>
-        <nav className="category-nav">
-          {categories.map((cat, index) => (
-            <Link 
-              key={index}
-              to={cat.link} 
-              className="category-item"
-              style={{
-                opacity: isLoaded ? 1 : 0,
-                transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-                transition: `all 0.5s ease ${index * 0.1}s`
-              }}
-            >
-              <span>{cat.icon}</span>
-              <span>{cat.name}</span>
-            </Link>
-          ))}
-        </nav>
-        <p className="scroll-hint">← swipe to see more →</p>
-      </div>
 
       {/* Popular Recipes Section */}
       <section className="section">
@@ -225,7 +191,7 @@ const Home = () => {
       {/* Latest Articles Section */}
       <section className="section">
         <div className="section-header">
-          <h2 className="section-title">최신 아티클</h2>
+          <h2 className="section-title">Recent Article</h2>
           <Link to="/articles" className="section-link">
             전체보기 →
           </Link>

@@ -5,13 +5,20 @@ import { useAuth } from '../context/AuthContext';
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
+
+  const categories = [
+    { name: 'Beans', link: '/beans' },
+    { name: 'Recipes', link: '/recipes' },
+    { name: 'Articles', link: '/articles' },
+    { name: 'Gears', link: '/gears' },
+    { name: 'Community', link: '/community' },
+  ];
 
   return (
     <nav style={{
@@ -33,7 +40,7 @@ const Navbar = () => {
         fontSize: '0.85rem',
         fontWeight: '500'
       }}>
-        ☕ 다양한 레시피를 위한 커피 디버깅 커뮤니티입니다.  🌟
+        ☕ 다양한 레시피를 위한 커피 디버깅 커뮤니티입니다. 🌟
       </div>
 
       {/* Main Nav */}
@@ -52,35 +59,70 @@ const Navbar = () => {
           fontWeight: '700',
           color: '#ffffff',
           textDecoration: 'none',
-          letterSpacing: '-0.5px'
+          letterSpacing: '-0.5px',
+          flexShrink: 0
         }}>
           Bean Debug
         </Link>
 
-        {/* Desktop Menu */}
-        <div style={{
+        {/* Desktop Menu - 드래그 가능 */}
+        <div className="nav-menu" style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '2.5rem'
+          gap: '1.5rem',
+          overflowX: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          flex: 1,
+          justifyContent: 'center',
+          padding: '0 1rem'
         }}>
-          <Link to="/beans" style={navLinkStyle}>Beans</Link>
-          <Link to="/recipes" style={navLinkStyle}>Recipes</Link>
-          <Link to="/articles" style={navLinkStyle}>Articles</Link>
-          <Link to="/gears" style={navLinkStyle}>Gears</Link>
-          <Link to="/community" style={navLinkStyle}>Community</Link>
+          {categories.map((cat, index) => (
+            <Link 
+              key={index}
+              to={cat.link} 
+              style={{
+                ...navLinkStyle,
+                whiteSpace: 'nowrap',
+                flexShrink: 0
+              }}
+            >
+              {cat.name}
+            </Link>
+          ))}
         </div>
 
-        {/* Auth Buttons */}
-        <div style={{
+        {/* Mobile Menu Button */}
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          style={{
+            display: 'none',
+            background: 'transparent',
+            border: 'none',
+            color: '#ffffff',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            padding: '0.5rem'
+          }}
+        >
+          {isMenuOpen ? '✕' : '☰'}
+        </button>
+
+        {/* Auth Buttons - 드래그 가능 */}
+        <div className="auth-buttons" style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '1rem'
+          gap: '1rem',
+          flexShrink: 0
         }}>
           {user ? (
             <>
               <span style={{
                 color: 'rgba(255, 255, 255, 0.8)',
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
+                whiteSpace: 'nowrap'
               }}>
                 {user.username}님
               </span>
@@ -88,7 +130,8 @@ const Navbar = () => {
                 color: '#D4A574',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontWeight: '500'
+                fontWeight: '500',
+                whiteSpace: 'nowrap'
               }}>
                 내 레시피
               </Link>
@@ -102,7 +145,8 @@ const Navbar = () => {
                   borderRadius: '25px',
                   cursor: 'pointer',
                   fontSize: '0.9rem',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
+                  whiteSpace: 'nowrap'
                 }}
                 onMouseOver={(e) => {
                   e.target.style.borderColor = '#ffffff';
@@ -122,7 +166,8 @@ const Navbar = () => {
                 color: 'rgba(255, 255, 255, 0.9)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
-                fontWeight: '500'
+                fontWeight: '500',
+                whiteSpace: 'nowrap'
               }}>
                 로그인
               </Link>
@@ -134,7 +179,8 @@ const Navbar = () => {
                 textDecoration: 'none',
                 fontSize: '0.9rem',
                 fontWeight: '600',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                whiteSpace: 'nowrap'
               }}>
                 회원가입
               </Link>
@@ -142,6 +188,111 @@ const Navbar = () => {
           )}
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMenuOpen && (
+        <div style={{
+          background: 'rgba(26, 26, 26, 0.98)',
+          padding: '1rem 2rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          {categories.map((cat, index) => (
+            <Link 
+              key={index}
+              to={cat.link} 
+              onClick={() => setIsMenuOpen(false)}
+              style={{
+                color: 'rgba(255, 255, 255, 0.85)',
+                textDecoration: 'none',
+                fontSize: '1rem',
+                fontWeight: '500',
+                padding: '0.5rem 0'
+              }}
+            >
+              {cat.name}
+            </Link>
+          ))}
+          <div style={{ 
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)', 
+            paddingTop: '1rem',
+            display: 'flex',
+            gap: '1rem'
+          }}>
+            {user ? (
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsMenuOpen(false);
+                }}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  color: '#ffffff',
+                  padding: '0.5rem 1.25rem',
+                  borderRadius: '25px',
+                  cursor: 'pointer',
+                  fontSize: '0.9rem'
+                }}
+              >
+                로그아웃
+              </button>
+            ) : (
+              <>
+                <Link 
+                  to="/login" 
+                  onClick={() => setIsMenuOpen(false)}
+                  style={{
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    textDecoration: 'none',
+                    fontSize: '0.9rem',
+                    fontWeight: '500'
+                  }}
+                >
+                  로그인
+                </Link>
+                <Link 
+                  to="/register" 
+                  onClick={() => setIsMenuOpen(false)}
+                  style={{
+                    background: '#D4A574',
+                    color: '#1a1a1a',
+                    padding: '0.6rem 1.5rem',
+                    borderRadius: '25px',
+                    textDecoration: 'none',
+                    fontSize: '0.9rem',
+                    fontWeight: '600'
+                  }}
+                >
+                  회원가입
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        .nav-menu::-webkit-scrollbar {
+          display: none;
+        }
+        
+        @media (max-width: 768px) {
+          .nav-menu {
+            display: none !important;
+          }
+          
+          .auth-buttons {
+            display: none !important;
+          }
+          
+          .mobile-menu-btn {
+            display: block !important;
+          }
+        }
+      `}</style>
     </nav>
   );
 };

@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: beandebug_db
+    environment:
+      POSTGRES_USER: beandebug
+      POSTGRES_PASSWORD: beandebug123
+      POSTGRES_DB: beandebug_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U beandebug"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - beandebug-network
+
+  api:
+    image: beandebug-api
+    container_name: beandebug_api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://beandebug:beandebug123@db:5432/beandebug_db
+      - SECRET_KEY=super-secret-key-change-this-in-production-min-32-chars
+      - APP_NAME=Bean Debug
+      - DEBUG=False
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - beandebug-network
+
+  frontend:
+    image: beandebug-frontend
+    container_name: beandebug_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - beandebug-network
+
+volumes:
+  postgres_data:
+
+networks:
+  beandebug-network:
+    driver: bridge

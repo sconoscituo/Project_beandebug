@@ -1,0 +1,9 @@
+{
+"BudgetName": "FreeTier-Monthly-Budget",
+"BudgetLimit": {
+"Amount": "1",
+"Unit": "USD"
+},
+"TimeUnit":"MONTHLY",
+"BudgetType":"COST"
+}

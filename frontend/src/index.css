@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -27,6 +27,10 @@ body {
 
 .font-display {
   font-family: 'Playfair Display', serif;
+}
+
+.font-code {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
 }
 
 /* Hero Section */
@@ -135,43 +139,63 @@ body {
 /* Category Navigation */
 .category-nav {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
-  padding: 2rem;
+  padding: 1.5rem 2rem;
   background: #ffffff;
-  flex-wrap: wrap;
   border-bottom: 1px solid #eee;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.category-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .category-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  background: #f5f5f5;
-  color: #333;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: #00ff88;
   text-decoration: none;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.3s ease;
-  border: 2px solid transparent;
+  border: 1px solid #333;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .category-item:hover {
-  background: var(--color-accent);
-  color: var(--color-dark);
+  background: #2a2a2a;
+  border-color: #00ff88;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
 }
 
 .category-item.active {
-  background: var(--color-dark);
-  color: #ffffff;
+  background: #00ff88;
+  color: #1a1a1a;
+  border-color: #00ff88;
 }
 
-.category-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--color-accent);
+.category-item span:first-child {
+  font-size: 1rem;
+}
+
+.scroll-hint {
+  display: none;
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  color: #888;
+  font-family: 'Fira Code', monospace;
+  background: #ffffff;
 }
 
 /* Section Styles */
@@ -411,6 +435,15 @@ body {
     display: none;
   }
   
+  .category-nav {
+    justify-content: flex-start;
+    padding: 1rem 1.5rem;
+  }
+  
+  .scroll-hint {
+    display: block;
+  }
+  
   .featured-content {
     grid-template-columns: 1fr;
   }
@@ -438,12 +471,18 @@ body {
   }
   
   .category-nav {
-    gap: 0.5rem;
+    gap: 0.75rem;
+    padding: 1rem;
   }
   
   .category-item {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.75rem;
+    gap: 0.4rem;
+  }
+  
+  .category-item span:first-child {
+    font-size: 0.9rem;
   }
   
   .footer-content {

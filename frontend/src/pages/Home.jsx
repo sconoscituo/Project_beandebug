@@ -9,12 +9,12 @@ const Home = () => {
   }, []);
 
   const categories = [
-    { name: '원두', icon: '☕', link: '/beans' },
-    { name: '레시피', icon: '���', link: '/recipes' },
-    { name: '브루잉 가이드', icon: '���', link: '/guides' },
-    { name: '장비 추천', icon: '⚙️', link: '/gears' },
-    { name: '아티클', icon: '���', link: '/articles' },
-    { name: '커뮤니티', icon: '���', link: '/community' },
+    { name: 'Beans', icon: '☕', link: '/beans' },
+    { name: 'Recipes', icon: '📃', link: '/recipes' },
+    { name: 'Brew Guide', icon: '🛣️', link: '/guides' },
+    { name: 'Gear', icon: '⚙️', link: '/gears' },
+    { name: 'Articles', icon: '📰', link: '/articles' },
+    { name: 'Community', icon: '💬', link: '/community' },
   ];
 
   const popularRecipes = [
@@ -62,21 +62,21 @@ const Home = () => {
       title: '2026 스페셜티 커피 트렌드',
       category: 'TREND',
       image: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400',
-      date: '2024.02.04'
+      date: '2026.02.04'
     },
     {
       id: 2,
       title: '홈카페 그라인더 선택 가이드',
       category: 'GEAR',
       image: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400',
-      date: '2024.02.03'
+      date: '2026.02.03'
     },
     {
       id: 3,
       title: '에티오피아 vs 케냐 원두 비교',
       category: 'BEAN',
       image: 'https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=400',
-      date: '2024.02.02'
+      date: '2026.02.02'
     }
   ];
 
@@ -92,11 +92,11 @@ const Home = () => {
           }}>
             <h1>
               완벽한 한 잔을<br />
-              <span style={{ color: '#D4A574' }}>디버깅</span>하다
+              <span style={{ color: '#D4A574' }}>{"디버깅"}</span>하다
             </h1>
             <p>
-              커피 추출의 모든 변수를 기록하고 분석하세요.<br />
-              당신만의 완벽한 레시피를 찾아드립니다.
+              커피 추출의 모든 변수를 기록하고 분석해봅시다.<br />
+              입문자, 전문가 모두를 위한 커피 기록 플랫폼 Bean Debug에서 완벽한 한 잔을 찾아보세요.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
               <Link to="/recipes" className="btn-primary">
@@ -122,23 +122,26 @@ const Home = () => {
       </section>
 
       {/* Category Navigation */}
-      <nav className="category-nav">
-        {categories.map((cat, index) => (
-          <Link 
-            key={index}
-            to={cat.link} 
-            className="category-item"
-            style={{
-              opacity: isLoaded ? 1 : 0,
-              transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
-              transition: `all 0.5s ease ${index * 0.1}s`
-            }}
-          >
-            <span style={{ fontSize: '1.25rem' }}>{cat.icon}</span>
-            <span>{cat.name}</span>
-          </Link>
-        ))}
-      </nav>
+      <div style={{ background: '#ffffff', borderBottom: '1px solid #eee' }}>
+        <nav className="category-nav">
+          {categories.map((cat, index) => (
+            <Link 
+              key={index}
+              to={cat.link} 
+              className="category-item"
+              style={{
+                opacity: isLoaded ? 1 : 0,
+                transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
+                transition: `all 0.5s ease ${index * 0.1}s`
+              }}
+            >
+              <span>{cat.icon}</span>
+              <span>{cat.name}</span>
+            </Link>
+          ))}
+        </nav>
+        <p className="scroll-hint">← swipe to see more →</p>
+      </div>
 
       {/* Popular Recipes Section */}
       <section className="section">

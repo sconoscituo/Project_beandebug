@@ -32,7 +32,7 @@ const Navbar = () => {
         fontSize: '0.85rem',
         fontWeight: '500'
       }}>
-        ☕ 커피 추출의 모든 것, Bean Debug에서 시작하세요
+        ☕ 커피의 세계로의 여정에 오신 것을 환영합니다! 지금 바로 회원가입하고 나만의 레시피를 공유해보세요. 🌟
       </div>
 
       {/* Main Nav */}

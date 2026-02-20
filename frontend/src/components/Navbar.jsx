@@ -63,11 +63,11 @@ const Navbar = () => {
           alignItems: 'center',
           gap: '2.5rem'
         }}>
-          <Link to="/beans" style={navLinkStyle}>원두</Link>
-          <Link to="/recipes" style={navLinkStyle}>레시피</Link>
-          <Link to="/articles" style={navLinkStyle}>아티클</Link>
-          <Link to="/gears" style={navLinkStyle}>장비</Link>
-          <Link to="/community" style={navLinkStyle}>커뮤니티</Link>
+          <Link to="/beans" style={navLinkStyle}>Beans</Link>
+          <Link to="/recipes" style={navLinkStyle}>Recipes</Link>
+          <Link to="/articles" style={navLinkStyle}>Articles</Link>
+          <Link to="/gears" style={navLinkStyle}>Gears</Link>
+          <Link to="/community" style={navLinkStyle}>Community</Link>
         </div>
 
         {/* Auth Buttons */}

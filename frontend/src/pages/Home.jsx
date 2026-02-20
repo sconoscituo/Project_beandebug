@@ -97,11 +97,20 @@ const Home = () => {
           }}>
             <h1>
               완벽한 한 잔을<br />
-              <span style={{ color: '#D4A574' }}>{"디버깅"}</span>하다
+                <span style={{ 
+                 color: '#00ff88', 
+                 fontFamily: "'Fira Code', monospace",
+                 background: '#1a1a1a',
+                 padding: '0.2rem 0.5rem',
+                 borderRadius: '4px'
+                 }}>
+                 {`<debug />`}
+                </span>
+                하다
             </h1>
             <p>
-              커피 추출의 모든 변수를 기록하고 분석해봅시다.<br />
-              입문자, 전문가 모두를 위한 커피 기록 플랫폼 Bean Debug에서 완벽한 한 잔을 찾아보세요.
+              입문자, 전문가 모두를 위한 커피 분석 플랫폼<br />
+              Bean Debug에서 완벽한 한 잔을 찾아보세요.
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
               <Link to="/recipes" className="btn-primary">
@@ -295,14 +304,14 @@ const Home = () => {
           <div>
             <h4 className="footer-title">서비스</h4>
             <ul className="footer-links">
-              <li><Link to="/recipes">레시피</Link></li>
-              <li><Link to="/beans">원두</Link></li>
-              <li><Link to="/gears">장비</Link></li>
-              <li><Link to="/articles">아티클</Link></li>
+              <li><Link to="/recipes">Recipes</Link></li>
+              <li><Link to="/beans">Beans</Link></li>
+              <li><Link to="/gears">Gear</Link></li>
+              <li><Link to="/articles">Article</Link></li>  
             </ul>
           </div>
           <div>
-            <h4 className="footer-title">커뮤니티</h4>
+            <h4 className="footer-title">Community</h4>
             <ul className="footer-links">
               <li><Link to="/community">커뮤니티</Link></li>
               <li><Link to="/guides">브루잉 가이드</Link></li>

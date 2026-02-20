@@ -8,6 +8,8 @@ import Register from './pages/Register';
 import Recipes from './pages/Recipes';
 import Beans from './pages/Beans';
 import Articles from './pages/Articles';
+import RecipeDetail from './pages/RecipeDetail';
+
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
             <Route path="/recipes" element={<Recipes />} />
             <Route path="/beans" element={<Beans />} />
             <Route path="/articles" element={<Articles />} />
+            <Route path="/recipes/:id" element={<RecipeDetail />} />
           </Routes>
         </div>
       </Router>

@@ -76,7 +76,7 @@ const Home = () => {
   ];
 
   return (
-    <div style={{ paddingTop: '100px' }}>
+    <div style={{ paddingTop: '70px' }}>
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
@@ -90,15 +90,14 @@ const Home = () => {
               <span style={{ 
                 color: '#00ff88', 
                 fontFamily: "'Fira Code', monospace",
-                fontSize: '1.5rem',
               }}>
-                {`<debug />`}
+                {'<debug />'}
               </span>
               하다
             </h1>
             <p>
               모두를 위한 커피 분석 플랫폼<br />
-              완벽한 한 잔을 위하여:{">"}
+              완벽한 한 잔을 위하여 ☺️
             </p>
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
               <Link to="/recipes" className="btn-primary">
@@ -115,7 +114,7 @@ const Home = () => {
             transition: 'all 0.8s ease 0.2s'
           }}>
             <img 
-              src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600" 
+              src="/hero-bg.jpg"
               alt="Coffee"
               style={{ borderRadius: '20px' }}
             />

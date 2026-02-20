@@ -13,12 +13,25 @@ const Navbar = () => {
   };
 
   const categories = [
-    { name: 'Beans', link: '/beans' },
-    { name: 'Recipes', link: '/recipes' },
-    { name: 'Articles', link: '/articles' },
-    { name: 'Gears', link: '/gears' },
-    { name: 'Community', link: '/community' },
+    { name: '☕ Beans', link: '/beans' },
+    { name: '📃 Recipes', link: '/recipes' },
+    { name: '📰 Articles', link: '/articles' },
+    { name: '🦾 Gears', link: '/gears' },
+    { name: '💬 Community', link: '/community' },
   ];
+
+  const categoryStyle = {
+    color: 'rgba(255, 255, 255, 0.8)',
+    textDecoration: 'none',
+    fontSize: '0.9rem',
+    fontWeight: '500',
+    fontFamily: "'Fira Code', monospace",
+    padding: '0.5rem 0',
+    borderBottom: '2px solid transparent',
+    transition: 'all 0.3s ease',
+    whiteSpace: 'nowrap',
+    flexShrink: 0
+  };
 
   return (
     <nav style={{
@@ -31,17 +44,6 @@ const Navbar = () => {
       backdropFilter: 'blur(10px)',
       borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
     }}>
-      {/* Top Bar */}
-      <div style={{
-        background: '#D4A574',
-        color: '#1a1a1a',
-        textAlign: 'center',
-        padding: '0.5rem',
-        fontSize: '0.85rem',
-        fontWeight: '500'
-      }}>
-        ☕ 다양한 레시피를 위한 커피 디버깅 커뮤니티입니다. 🌟
-      </div>
 
       {/* Main Nav */}
       <div style={{
@@ -54,22 +56,22 @@ const Navbar = () => {
       }}>
         {/* Logo */}
         <Link to="/" style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: '1.75rem',
+          fontFamily: "'Fira Code', monospace",
+          fontSize: '1.5rem',
           fontWeight: '700',
           color: '#ffffff',
           textDecoration: 'none',
           letterSpacing: '-0.5px',
           flexShrink: 0
         }}>
-          Bean Debug
+          {'{ BeanDebug }'}
         </Link>
 
-        {/* Desktop Menu - 드래그 가능 */}
+        {/* Desktop Menu */}
         <div className="nav-menu" style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '1.5rem',
+          gap: '2rem',
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
@@ -82,10 +84,14 @@ const Navbar = () => {
             <Link 
               key={index}
               to={cat.link} 
-              style={{
-                ...navLinkStyle,
-                whiteSpace: 'nowrap',
-                flexShrink: 0
+              style={categoryStyle}
+              onMouseOver={(e) => {
+                e.target.style.color = '#ffffff';
+                e.target.style.borderBottom = '2px solid #00ff88';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.color = 'rgba(255, 255, 255, 0.8)';
+                e.target.style.borderBottom = '2px solid transparent';
               }}
             >
               {cat.name}
@@ -110,7 +116,7 @@ const Navbar = () => {
           {isMenuOpen ? '✕' : '☰'}
         </button>
 
-        {/* Auth Buttons - 드래그 가능 */}
+        {/* Auth Buttons */}
         <div className="auth-buttons" style={{
           display: 'flex',
           alignItems: 'center',
@@ -120,69 +126,94 @@ const Navbar = () => {
           {user ? (
             <>
               <span style={{
-                color: 'rgba(255, 255, 255, 0.8)',
-                fontSize: '0.9rem',
+                color: '#00ff88',
+                fontSize: '0.85rem',
+                fontFamily: "'Fira Code', monospace",
                 whiteSpace: 'nowrap'
               }}>
-                {user.username}님
+                @{user.username}
               </span>
               <Link to="/my-recipes" style={{
-                color: '#D4A574',
+                color: '#f1fa8c',
                 textDecoration: 'none',
-                fontSize: '0.9rem',
+                fontSize: '0.85rem',
+                fontFamily: "'Fira Code', monospace",
                 fontWeight: '500',
                 whiteSpace: 'nowrap'
               }}>
-                내 레시피
+                myRecipes()
               </Link>
               <button
                 onClick={handleLogout}
                 style={{
                   background: 'transparent',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  color: '#ffffff',
-                  padding: '0.5rem 1.25rem',
-                  borderRadius: '25px',
+                  border: '1px solid #ff5555',
+                  color: '#ff5555',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '6px',
                   cursor: 'pointer',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
+                  fontFamily: "'Fira Code', monospace",
                   transition: 'all 0.3s ease',
                   whiteSpace: 'nowrap'
                 }}
                 onMouseOver={(e) => {
-                  e.target.style.borderColor = '#ffffff';
-                  e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                  e.target.style.background = '#ff5555';
+                  e.target.style.color = '#0a0a0a';
                 }}
                 onMouseOut={(e) => {
-                  e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                   e.target.style.background = 'transparent';
+                  e.target.style.color = '#ff5555';
                 }}
               >
-                로그아웃
+                logout()
               </button>
             </>
           ) : (
             <>
               <Link to="/login" style={{
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: '#8be9fd',
                 textDecoration: 'none',
-                fontSize: '0.9rem',
+                fontSize: '0.85rem',
+                fontFamily: "'Fira Code', monospace",
                 fontWeight: '500',
-                whiteSpace: 'nowrap'
-              }}>
-                로그인
+                whiteSpace: 'nowrap',
+                padding: '0.5rem 1rem',
+                border: '1px solid #8be9fd',
+                borderRadius: '6px',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = '#8be9fd';
+                e.target.style.color = '#0a0a0a';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'transparent';
+                e.target.style.color = '#8be9fd';
+              }}
+              >
+                login()
               </Link>
               <Link to="/register" style={{
-                background: '#D4A574',
-                color: '#1a1a1a',
-                padding: '0.6rem 1.5rem',
-                borderRadius: '25px',
+                background: '#00ff88',
+                color: '#0a0a0a',
+                padding: '0.5rem 1rem',
+                borderRadius: '6px',
                 textDecoration: 'none',
-                fontSize: '0.9rem',
+                fontSize: '0.85rem',
+                fontFamily: "'Fira Code', monospace",
                 fontWeight: '600',
                 transition: 'all 0.3s ease',
                 whiteSpace: 'nowrap'
-              }}>
-                회원가입
+              }}
+              onMouseOver={(e) => {
+                e.target.style.boxShadow = '0 0 15px rgba(0, 255, 136, 0.4)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.boxShadow = 'none';
+              }}
+              >
+                register()
               </Link>
             </>
           )}
@@ -192,12 +223,12 @@ const Navbar = () => {
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
         <div style={{
-          background: 'rgba(26, 26, 26, 0.98)',
+          background: 'rgba(10, 10, 10, 0.98)',
           padding: '1rem 2rem',
           display: 'flex',
           flexDirection: 'column',
-          gap: '1rem',
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+          gap: '0.5rem',
+          borderTop: '1px solid #333'
         }}>
           {categories.map((cat, index) => (
             <Link 
@@ -205,18 +236,19 @@ const Navbar = () => {
               to={cat.link} 
               onClick={() => setIsMenuOpen(false)}
               style={{
-                color: 'rgba(255, 255, 255, 0.85)',
+                color: 'rgba(255, 255, 255, 0.8)',
                 textDecoration: 'none',
-                fontSize: '1rem',
+                fontSize: '0.9rem',
+                fontFamily: "'Fira Code', monospace",
                 fontWeight: '500',
-                padding: '0.5rem 0'
+                padding: '0.75rem 0',
+                borderBottom: '1px solid #333'
               }}
             >
               {cat.name}
             </Link>
           ))}
           <div style={{ 
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)', 
             paddingTop: '1rem',
             display: 'flex',
             gap: '1rem'
@@ -229,15 +261,16 @@ const Navbar = () => {
                 }}
                 style={{
                   background: 'transparent',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  color: '#ffffff',
-                  padding: '0.5rem 1.25rem',
-                  borderRadius: '25px',
+                  border: '1px solid #ff5555',
+                  color: '#ff5555',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '6px',
                   cursor: 'pointer',
-                  fontSize: '0.9rem'
+                  fontSize: '0.85rem',
+                  fontFamily: "'Fira Code', monospace"
                 }}
               >
-                로그아웃
+                logout()
               </button>
             ) : (
               <>
@@ -245,28 +278,33 @@ const Navbar = () => {
                   to="/login" 
                   onClick={() => setIsMenuOpen(false)}
                   style={{
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    color: '#8be9fd',
                     textDecoration: 'none',
-                    fontSize: '0.9rem',
-                    fontWeight: '500'
+                    fontSize: '0.85rem',
+                    fontFamily: "'Fira Code', monospace",
+                    fontWeight: '500',
+                    padding: '0.5rem 1rem',
+                    border: '1px solid #8be9fd',
+                    borderRadius: '6px'
                   }}
                 >
-                  로그인
+                  login()
                 </Link>
                 <Link 
                   to="/register" 
                   onClick={() => setIsMenuOpen(false)}
                   style={{
-                    background: '#D4A574',
-                    color: '#1a1a1a',
-                    padding: '0.6rem 1.5rem',
-                    borderRadius: '25px',
+                    background: '#00ff88',
+                    color: '#0a0a0a',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
                     textDecoration: 'none',
-                    fontSize: '0.9rem',
+                    fontSize: '0.85rem',
+                    fontFamily: "'Fira Code', monospace",
                     fontWeight: '600'
                   }}
                 >
-                  회원가입
+                  register()
                 </Link>
               </>
             )}
@@ -295,15 +333,6 @@ const Navbar = () => {
       `}</style>
     </nav>
   );
-};
-
-const navLinkStyle = {
-  color: 'rgba(255, 255, 255, 0.85)',
-  textDecoration: 'none',
-  fontSize: '0.95rem',
-  fontWeight: '500',
-  transition: 'color 0.3s ease',
-  position: 'relative'
 };
 
 export default Navbar;

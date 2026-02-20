@@ -40,7 +40,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: beandebug_frontend
+    container_name: beandebug-frontend
     ports:
       - "80:80"
     depends_on:

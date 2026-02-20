@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Recipes from './pages/Recipes';
+import Beans from './pages/Beans';
+import Articles from './pages/Articles';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/recipes" element={<Recipes />} />
+            <Route path="/beans" element={<Beans />} />
+            <Route path="/articles" element={<Articles />} />
           </Routes>
         </div>
       </Router>

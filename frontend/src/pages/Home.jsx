@@ -108,17 +108,7 @@ const Home = () => {
               </Link>
             </div>
           </div>
-          <div className="hero-image" style={{
-            opacity: isLoaded ? 1 : 0,
-            transform: isLoaded ? 'translateX(0)' : 'translateX(50px)',
-            transition: 'all 0.8s ease 0.2s'
-          }}>
-            <img 
-              src="/hero-bg.jpg"
-              alt="Coffee"
-              style={{ borderRadius: '20px' }}
-            />
-          </div>
+          
         </div>
       </section>
 

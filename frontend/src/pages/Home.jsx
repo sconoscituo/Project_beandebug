@@ -5,7 +5,12 @@ const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true);
+    // requestAnimationFrame으로 다음 프레임에서 실행
+    const timer = requestAnimationFrame(() => {
+      setIsLoaded(true);
+    });
+    
+    return () => cancelAnimationFrame(timer);
   }, []);
 
   const categories = [

@@ -19,9 +19,10 @@ services:
       - beandebug-network
 
   api:
-    image: beandebug-api
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: beandebug_api
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
     environment:
@@ -36,7 +37,9 @@ services:
       - beandebug-network
 
   frontend:
-    image: beandebug-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: beandebug_frontend
     ports:
       - "80:80"

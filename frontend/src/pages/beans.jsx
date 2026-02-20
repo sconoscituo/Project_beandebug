@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom';
 
 const Beans = () => {
   const [beans, setBeans] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    // 임시 로딩 해제
+    setLoading(false);
+  }, []);
 
   const origins = [
     { id: 'all', name: 'All', icon: '🌍' },

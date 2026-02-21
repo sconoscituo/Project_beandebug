@@ -27,16 +27,14 @@ jobs:
     needs: build-and-push # 빌드가 성공해야 배포 시작
     runs-on: ubuntu-latest
     steps:
-      - name: SSH to EC2 and Deploy
+      - name: Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/coffeelab # 프로젝트 폴더로 이동
-            git pull origin main
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker compose pull # 최신 이미지 가져오기
-            docker compose up -d # 컨테이너 재시작
-            docker image prune -f # 오래된 이미지 정리
+            cd /home/ec2-user/coffeelab
+            docker compose pull frontend
+            docker compose up -d frontend
+            docker image prune -f

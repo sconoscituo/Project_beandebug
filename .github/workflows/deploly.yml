@@ -1,0 +1,44 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ] # main 브랜치에 push될 때 실행
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/beandebug-api ./backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/beandebug-api
+          # 프론트엔드도 동일하게 추가 가능
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/beandebug-frontend ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/beandebug-frontend
+
+  deploy:
+    needs: build-and-push # 빌드가 성공해야 배포 시작
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH to EC2 and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/coffeelab # 프로젝트 폴더로 이동
+            git pull origin main
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker compose pull # 최신 이미지 가져오기
+            docker compose up -d # 컨테이너 재시작
+            docker image prune -f # 오래된 이미지 정리

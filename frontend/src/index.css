@@ -47,8 +47,10 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('/hero-bg7.png') center/cover;
+  /* 수정된 부분: center 대신 left를 사용하여 왼쪽 고정 */
+  background: url('/hero-bg7.png') no-repeat left center / cover;
   opacity: 0.3;
+  z-index: 1; /* 텍스트보다 뒤에 오도록 확인 */
 }
 
 .hero-content {

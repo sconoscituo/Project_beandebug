@@ -19,9 +19,7 @@ services:
       - beandebug-network
 
   api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: sconosciuto/beandebug-api:latest
     container_name: beandebug_api
     ports:
       - "8000:8000"
@@ -37,9 +35,7 @@ services:
       - beandebug-network
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: sconosciuto/beandebug-frontend:latest
     container_name: beandebug-frontend
     ports:
       - "80:80"

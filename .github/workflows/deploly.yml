@@ -20,7 +20,7 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/beandebug-api ./backend
           docker push ${{ secrets.DOCKER_USERNAME }}/beandebug-api
           # 프론트엔드도 동일하게 추가 가능
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/beandebug-frontend ./frontend
+          docker build --no-cache -t ${{ secrets.DOCKER_USERNAME }}/beandebug-frontend ./frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/beandebug-frontend
 
   deploy:

@@ -57,6 +57,9 @@ jobs:
             cd /home/ec2-user/beandebug
             git pull origin main
 
+            # .env 파일 생성 (GitHub Secret → EC2)
+            echo "${{ secrets.ENV_FILE }}" > .env
+
             # Docker Hub에서 최신 이미지 pull
             docker pull ${{ secrets.DOCKER_USERNAME }}/beandebug-api:latest
             docker pull ${{ secrets.DOCKER_USERNAME }}/beandebug-frontend:latest

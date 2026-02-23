@@ -1,8 +1,8 @@
 from GoogleNews import GoogleNews
 from sqlalchemy.orm import Session
-from ..models.article import Article  # ArticleCategory 삭제됨
+from ..models.article import Article
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 
 def extract_first_image(html_content: str):
@@ -20,7 +20,7 @@ def extract_first_image(html_content: str):
 def fetch_and_store_google_news(db: Session):
     googlenews = GoogleNews(lang='ko', period='1d')
     googlenews.search('커피 기술')
-    
+
     results = googlenews.results()
     count = 0
 
@@ -30,9 +30,8 @@ def fetch_and_store_google_news(db: Session):
         if existing_article:
             continue
 
-        content_html = item.get('desc', '') or item.get('link', '') 
-        
-        # 이미지 추출: 구글 뉴스 제공 이미지 또는 본문 내 이미지
+        content_html = item.get('desc', '') or item.get('link', '')
+
         image_url = item.get('img')
         if not image_url:
             image_url = extract_first_image(content_html)
@@ -42,13 +41,13 @@ def fetch_and_store_google_news(db: Session):
             content=content_html,
             thumbnail_url=image_url,
             is_published=True,
-            published_at=datetime.utcnow()
+            published_at=datetime.now(timezone.utc)
         )
-        
+
         db.add(new_article)
         count += 1
-    
+
     if count > 0:
         db.commit()
-    
+
     return count

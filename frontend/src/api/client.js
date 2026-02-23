@@ -9,7 +9,7 @@ const apiClient = axios.create({
   },
 });
 
-// Request 인터셉터 - 토큰 자동 추가
+// request
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('access_token');
@@ -23,7 +23,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response 인터셉터 - 401 에러 처리
+// response
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {

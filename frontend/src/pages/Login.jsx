@@ -7,7 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ const Login = () => {
         width: '100%',
         maxWidth: '480px'
       }}>
-        {/* Terminal Window */}
+        {/* window */}
         <div style={{
           background: '#1e1e1e',
           borderRadius: '12px',
@@ -48,7 +48,7 @@ const Login = () => {
           boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
           border: '1px solid #333'
         }}>
-          {/* Terminal Header */}
+          {/* header */}
           <div style={{
             background: '#2d2d2d',
             padding: '12px 16px',
@@ -66,19 +66,17 @@ const Login = () => {
               fontFamily: "'Fira Code', monospace",
               fontSize: '0.85rem'
             }}>
-              beandebug@login ~ 
+              beandebug@login ~
             </span>
           </div>
 
-          {/* Terminal Body */}
+          {/* body */}
           <div style={{ padding: '2rem' }}>
-            {/* Title */}
             <div style={{
               fontFamily: "'Fira Code', monospace",
               marginBottom: '1.5rem'
             }}>
               <div style={{ color: '#888', fontSize: '0.85rem' }}>
-                {/* Welcome message */}
                 <span style={{ color: '#00ff88' }}>$</span> ./authenticate.sh
               </div>
               <div style={{
@@ -110,7 +108,6 @@ const Login = () => {
                 </div>
               )}
 
-              {/* Username Field */}
               <div style={{ marginBottom: '1.5rem' }}>
                 <label style={{
                   display: 'block',
@@ -147,7 +144,6 @@ const Login = () => {
                 />
               </div>
 
-              {/* Password Field */}
               <div style={{ marginBottom: '2rem' }}>
                 <label style={{
                   display: 'block',
@@ -184,7 +180,6 @@ const Login = () => {
                 />
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
@@ -209,7 +204,6 @@ const Login = () => {
               </button>
             </form>
 
-            {/* Register Link */}
             <div style={{
               marginTop: '2rem',
               textAlign: 'center',
@@ -233,7 +227,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Footer */}
         <div style={{
           textAlign: 'center',
           marginTop: '1.5rem',

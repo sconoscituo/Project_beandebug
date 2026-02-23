@@ -6,7 +6,6 @@ const Articles = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
-  // 백엔드 ArticleCategory Enum 값에 맞게 수정
   const categories = [
     { id: 'all', name: 'ALL_FILES', icon: '📁' },
     { id: 'new_tech', name: 'NEW_TECH', icon: '📡' },
@@ -27,7 +26,6 @@ const Articles = () => {
     const fetchArticles = async () => {
       try {
         setLoading(true);
-        // 필터가 'all'이 아니면 쿼리 스트링 추가
         const url = filter === 'all' 
           ? `http://localhost:8000/api/articles/` 
           : `http://localhost:8000/api/articles/?category=${filter}`;

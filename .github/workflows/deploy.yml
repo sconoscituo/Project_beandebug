@@ -49,7 +49,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 레포 없으면 클론, 있으면 pull
+            # clone or pull
             if [ ! -d /home/ec2-user/beandebug/.git ]; then
               git clone https://github.com/sconoscituo/Project_beandebug.git /home/ec2-user/beandebug
             fi
@@ -57,20 +57,20 @@ jobs:
             cd /home/ec2-user/beandebug
             git pull origin main
 
-            # .env 파일 생성 (GitHub Secret → EC2)
+            # inject env
             echo "${{ secrets.ENV_FILE }}" > .env
 
-            # Docker Hub에서 최신 이미지 pull
+            # pull images
             docker pull ${{ secrets.DOCKER_USERNAME }}/beandebug-api:latest
             docker pull ${{ secrets.DOCKER_USERNAME }}/beandebug-frontend:latest
 
-            # 컨테이너 재시작
+            # restart
             docker-compose -f docker-compose.prod.yml down
             DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} docker-compose -f docker-compose.prod.yml up -d
 
-            # 오래된 이미지 정리
+            # cleanup
             docker image prune -f
 
-            # 배포 결과 확인
-            echo "===== 배포 완료 ====="
+            # verify
+            echo "===== deploy done ====="
             docker-compose -f docker-compose.prod.yml ps

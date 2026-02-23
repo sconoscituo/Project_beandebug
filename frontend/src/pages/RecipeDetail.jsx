@@ -22,7 +22,6 @@ const RecipeDetail = () => {
     }
   };
 
-  // 샘플 데이터 (API 연결 전)
   const sampleRecipe = {
     id: 1,
     title: 'V60 기본 레시피',
@@ -121,7 +120,6 @@ const RecipeDetail = () => {
 
           {/* Card Body */}
           <div style={{ padding: '2rem' }}>
-            {/* Title */}
             <div style={{ marginBottom: '1.5rem' }}>
               <h1 style={{
                 fontFamily: "'Fira Code', monospace",

@@ -27,11 +27,11 @@ const Home = () => {
 
   return (
     <div style={{ paddingTop: '70px' }}>
-      {/* Hero Section */}
+      {/* hero */}
       <section className="hero-section">
-        <div className="hero-content" style={{ 
-          display: 'block', // CSS의 grid 설정을 덮어씌워 전체 너비 사용
-          textAlign: 'left' 
+        <div className="hero-content" style={{
+          display: 'block',
+          textAlign: 'left'
         }}>
           <div className="hero-text" style={{
             opacity: isLoaded ? 1 : 0,
@@ -39,8 +39,8 @@ const Home = () => {
             transition: 'all 0.8s ease',
             
           }}>
-            <h1 style={{ 
-              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', // CSS의 4rem보다 유연하게 설정
+            <h1 style={{
+              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
               whiteSpace: 'normal',
               wordBreak: 'keep-all',
               display: 'block',
@@ -79,7 +79,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 이하 기존 섹션들과 동일 */}
       <section className="section">
         <div className="section-header">
           <h2 className="section-title">인기 레시피</h2>

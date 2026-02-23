@@ -11,7 +11,7 @@ const Register = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -74,7 +74,7 @@ const Register = () => {
         width: '100%',
         maxWidth: '480px'
       }}>
-        {/* Terminal Window */}
+        {/* window */}
         <div style={{
           background: '#1e1e1e',
           borderRadius: '12px',
@@ -82,7 +82,7 @@ const Register = () => {
           boxShadow: '0 25px 50px rgba(0, 0, 0, 0.5)',
           border: '1px solid #333'
         }}>
-          {/* Terminal Header */}
+          {/* header */}
           <div style={{
             background: '#2d2d2d',
             padding: '12px 16px',
@@ -100,13 +100,12 @@ const Register = () => {
               fontFamily: "'Fira Code', monospace",
               fontSize: '0.85rem'
             }}>
-              beandebug@register ~ 
+              beandebug@register ~
             </span>
           </div>
 
-          {/* Terminal Body */}
+          {/* body */}
           <div style={{ padding: '2rem' }}>
-            {/* Title */}
             <div style={{
               fontFamily: "'Fira Code', monospace",
               marginBottom: '1.5rem'
@@ -143,7 +142,6 @@ const Register = () => {
                 </div>
               )}
 
-              {/* Email Field */}
               <div style={{ marginBottom: '1.25rem' }}>
                 <label style={labelStyle}>
                   <span style={{ color: '#ff79c6' }}>const</span>
@@ -163,7 +161,6 @@ const Register = () => {
                 />
               </div>
 
-              {/* Username Field */}
               <div style={{ marginBottom: '1.25rem' }}>
                 <label style={labelStyle}>
                   <span style={{ color: '#ff79c6' }}>const</span>
@@ -183,7 +180,6 @@ const Register = () => {
                 />
               </div>
 
-              {/* Full Name Field */}
               <div style={{ marginBottom: '1.25rem' }}>
                 <label style={labelStyle}>
                   <span style={{ color: '#ff79c6' }}>const</span>
@@ -203,7 +199,6 @@ const Register = () => {
                 />
               </div>
 
-              {/* Password Field */}
               <div style={{ marginBottom: '2rem' }}>
                 <label style={labelStyle}>
                   <span style={{ color: '#ff79c6' }}>const</span>
@@ -223,7 +218,6 @@ const Register = () => {
                 />
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
@@ -248,7 +242,6 @@ const Register = () => {
               </button>
             </form>
 
-            {/* Login Link */}
             <div style={{
               marginTop: '2rem',
               textAlign: 'center',
@@ -272,7 +265,6 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Footer */}
         <div style={{
           textAlign: 'center',
           marginTop: '1.5rem',

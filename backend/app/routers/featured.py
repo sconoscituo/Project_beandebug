@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timezone
 
 from ..database.connection import get_db
 from ..models import BeanOfTheMonth, FeaturedRecipe, Bean, Recipe, User
@@ -37,7 +37,7 @@ def create_bean_of_month(
 
 @router.get("/bean-of-month/current", response_model=BeanOfTheMonthResponse)
 def get_current_bean_of_month(db: Session = Depends(get_db)):
-    current_month = datetime.utcnow().strftime("%Y-%m")
+    current_month = datetime.now(timezone.utc).strftime("%Y-%m")
     bean_of_month = db.query(BeanOfTheMonth).filter(
         BeanOfTheMonth.month == current_month,
         BeanOfTheMonth.is_active == True
@@ -81,7 +81,7 @@ def get_featured_recipes(
     query = db.query(FeaturedRecipe).filter(FeaturedRecipe.is_active == True)
     if category:
         query = query.filter(FeaturedRecipe.category == category)
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     query = query.filter(
         (FeaturedRecipe.expires_at.is_(None)) | (FeaturedRecipe.expires_at > now)
     )

@@ -7,7 +7,6 @@ const Beans = () => {
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    // 임시 로딩 해제
     setLoading(false);
   }, []);
 

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 from ..database.connection import Base
 
 class Article(Base):
@@ -14,8 +14,8 @@ class Article(Base):
     is_published = Column(Boolean, default=True)
     view_count = Column(Integer, default=0)
     likes_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    published_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    published_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     comments = relationship("ArticleComment", back_populates="article", cascade="all, delete-orphan")
     likes = relationship("ArticleLike", back_populates="article", cascade="all, delete-orphan")

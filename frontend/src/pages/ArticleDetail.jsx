@@ -36,7 +36,6 @@ const ArticleDetail = () => {
     </div>
   );
 
-  // 더미 이미지(base64 1px)인지 확인하는 함수
   const isDummyImage = article.thumbnail_url?.startsWith('data:image/gif');
 
   return (
@@ -57,7 +56,7 @@ const ArticleDetail = () => {
             {article.title}
           </h1>
           
-          {/* 이미지 섹션: 더미 데이터일 경우 흑백 사각형 방지 */}
+          {/* thumbnail */}
           <div style={{ width: '100%', minHeight: '200px', background: '#000', border: '1px solid #222', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px 0' }}>
             {article.thumbnail_url && !isDummyImage ? (
               <img src={article.thumbnail_url} alt="intel" style={{ width: '100%', height: 'auto', opacity: 0.8 }} />

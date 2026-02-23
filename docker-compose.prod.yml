@@ -18,9 +18,7 @@ services:
       retries: 5
 
   api:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ${DOCKER_USERNAME}/beandebug-api:latest
     container_name: coffeelab_api_prod
     environment:
       - DATABASE_URL=postgresql://${DB_USER:-coffeelab}:${DB_PASSWORD}@db:5432/${DB_NAME:-coffeelab_db}
@@ -42,9 +40,7 @@ services:
       start_period: 20s
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ${DOCKER_USERNAME}/beandebug-frontend:latest
     container_name: coffeelab_frontend_prod
     ports:
       - "80:80"

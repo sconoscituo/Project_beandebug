@@ -54,12 +54,6 @@ def get_articles(
     published_only: bool = True,
     db: Session = Depends(get_db)
 ):
-    try:
-        from ..services.news_service import fetch_and_store_google_news
-        fetch_and_store_google_news(db)
-    except Exception as e:
-        print(f"뉴스 수집 실패: {e}")
-
     query = db.query(Article)
     if published_only:
         query = query.filter(Article.is_published == True)

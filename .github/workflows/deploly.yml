@@ -49,9 +49,12 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/ec2-user/beandebug
+            # 레포 없으면 클론, 있으면 pull
+            if [ ! -d /home/ec2-user/beandebug/.git ]; then
+              git clone https://github.com/sconoscituo/Project_beandebug.git /home/ec2-user/beandebug
+            fi
 
-            # 최신 코드 동기화
+            cd /home/ec2-user/beandebug
             git pull origin main
 
             # Docker Hub에서 최신 이미지 pull

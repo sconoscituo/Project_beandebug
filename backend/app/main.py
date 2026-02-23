@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.staticfiles import StaticFiles
+import os
 from .database.connection import engine, Base, settings
 from .routers import (
     auth_router,
@@ -11,7 +12,6 @@ from .routers import (
     featured_router
 )
 
-# 데이터베이스 테이블 생성
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -22,16 +22,21 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS 설정
+UPLOAD_DIR = "uploads"
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
+app.mount("/media", StaticFiles(directory="uploads"), name="media")
+
+allowed_origins = [o.strip() for o in settings.allowed_origins.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 프로덕션에서는 특정 도메인만 허용
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# 라우터 등록
 app.include_router(auth_router)
 app.include_router(beans_router)
 app.include_router(recipes_router)

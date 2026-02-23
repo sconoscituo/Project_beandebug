@@ -16,8 +16,7 @@ def create_bean(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """원두 등록"""
-    db_bean = Bean(**bean.dict(), owner_id=current_user.id)
+    db_bean = Bean(**bean.model_dump(), owner_id=current_user.id)
     db.add(db_bean)
     db.commit()
     db.refresh(db_bean)
@@ -30,9 +29,7 @@ def get_my_beans(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """내 원두 목록"""
-    beans = db.query(Bean).filter(Bean.owner_id == current_user.id).offset(skip).limit(limit).all()
-    return beans
+    return db.query(Bean).filter(Bean.owner_id == current_user.id).offset(skip).limit(limit).all()
 
 @router.get("/public", response_model=List[BeanResponse])
 def get_public_beans(
@@ -42,16 +39,12 @@ def get_public_beans(
     roast_level: str = Query(None),
     db: Session = Depends(get_db)
 ):
-    """공개된 원두 목록"""
     query = db.query(Bean).filter(Bean.is_public == True)
-    
     if origin:
         query = query.filter(Bean.origin.ilike(f"%{origin}%"))
     if roast_level:
         query = query.filter(Bean.roast_level == roast_level)
-    
-    beans = query.offset(skip).limit(limit).all()
-    return beans
+    return query.offset(skip).limit(limit).all()
 
 @router.get("/{bean_id}", response_model=BeanResponse)
 def get_bean(
@@ -59,12 +52,10 @@ def get_bean(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """원두 상세 조회"""
     bean = db.query(Bean).filter(
         Bean.id == bean_id,
         or_(Bean.owner_id == current_user.id, Bean.is_public == True)
     ).first()
-    
     if not bean:
         raise HTTPException(status_code=404, detail="Bean not found")
     return bean
@@ -76,15 +67,12 @@ def update_bean(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """원두 정보 수정"""
     bean = db.query(Bean).filter(Bean.id == bean_id, Bean.owner_id == current_user.id).first()
     if not bean:
         raise HTTPException(status_code=404, detail="Bean not found")
-    
-    update_data = bean_update.dict(exclude_unset=True)
+    update_data = bean_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(bean, field, value)
-    
     db.commit()
     db.refresh(bean)
     return bean
@@ -95,11 +83,9 @@ def delete_bean(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
-    """원두 삭제"""
     bean = db.query(Bean).filter(Bean.id == bean_id, Bean.owner_id == current_user.id).first()
     if not bean:
         raise HTTPException(status_code=404, detail="Bean not found")
-    
     db.delete(bean)
     db.commit()
     return None

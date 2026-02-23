@@ -10,8 +10,9 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     app_name: str = "Bean Debug"
-    debug: bool = True
-    
+    debug: bool = False
+    allowed_origins: str = "http://localhost:80,http://localhost:3000"
+
     class Config:
         env_file = ".env"
 

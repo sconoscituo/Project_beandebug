@@ -8,8 +8,9 @@ import Register from './pages/Register';
 import Recipes from './pages/Recipes';
 import Beans from './pages/Beans';
 import Articles from './pages/Articles';
+import ArticleDetail from './pages/ArticleDetail';
 import RecipeDetail from './pages/RecipeDetail';
-
+import Gears from './pages/Gears';
 
 function App() {
   return (
@@ -22,9 +23,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/recipes" element={<Recipes />} />
+            <Route path="/recipes/:id" element={<RecipeDetail />} />
             <Route path="/beans" element={<Beans />} />
             <Route path="/articles" element={<Articles />} />
-            <Route path="/recipes/:id" element={<RecipeDetail />} />
+            <Route path="/articles/:id" element={<ArticleDetail />} />
+            <Route path="/gears" element={<Gears />} />
           </Routes>
         </div>
       </Router>

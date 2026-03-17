@@ -11,6 +11,7 @@ import Articles from './pages/Articles';
 import ArticleDetail from './pages/ArticleDetail';
 import RecipeDetail from './pages/RecipeDetail';
 import Gears from './pages/Gears';
+import Community from './pages/Community';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/articles" element={<Articles />} />
             <Route path="/articles/:id" element={<ArticleDetail />} />
             <Route path="/gears" element={<Gears />} />
+            <Route path="/community" element={<Community />} />
           </Routes>
         </div>
       </Router>

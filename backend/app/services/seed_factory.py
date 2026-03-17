@@ -211,6 +211,34 @@ class SeedFactory:
             {"title": "커피와 음식 페어링 가이드", "summary": "커피와 어울리는 음식 조합, 맛의 시너지를 탐구합니다.", "content": "와인처럼 커피에도 페어링이 있습니다.\n\n## 라이트 로스트\n- 에티오피아 워시드 + 레몬 타르트\n- 케냐 + 베리류 디저트\n- 파나마 게이샤 + 백도 셔벗\n\n## 미디엄 로스트\n- 콜롬비아 + 초콜릿 크루아상\n- 과테말라 + 호두 브라우니\n- 코스타리카 허니 + 치즈케이크\n\n## 다크 로스트\n- 인도네시아 만델링 + 다크 초콜릿\n- 브라질 내추럴 + 티라미수\n- 에스프레소 + 카놀리\n\n## 의외의 조합\n- 콜드브루 + 치즈 (고다, 브리)\n- 에스프레소 + 올리브오일 (트렌드!)\n- V60 에티오피아 + 회(참치, 연어)"},
         ]
 
+        article_thumbs = [
+            "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=600",
+            "https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=600",
+            "https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=600",
+            "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600",
+            "https://images.unsplash.com/photo-1518057111178-44a106bad636?w=600",
+            "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600",
+            "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600",
+            "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600",
+            "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=600",
+            "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=600",
+            "https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=600",
+            "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=600",
+            "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600",
+            "https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=600",
+            "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600",
+            "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=600",
+            "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=600",
+            "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600",
+            "https://images.unsplash.com/photo-1611564494260-6f21b80af7ea?w=600",
+            "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=600",
+            "https://images.unsplash.com/photo-1521302080334-4bebac2763a6?w=600",
+            "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?w=600",
+            "https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600",
+            "https://images.unsplash.com/photo-1460518451285-97b6aa326961?w=600",
+            "https://images.unsplash.com/photo-1507133750040-4a8f57021571?w=600",
+        ]
+
         articles = []
         now = datetime.now(timezone.utc)
         for i, data in enumerate(article_data):
@@ -218,6 +246,7 @@ class SeedFactory:
             article = Article(
                 **data,
                 author_id=user.id,
+                thumbnail_url=article_thumbs[i % len(article_thumbs)],
                 is_published=True,
                 view_count=random.randint(100, 5000),
                 likes_count=random.randint(10, 300),
@@ -234,26 +263,26 @@ class SeedFactory:
 
     def _create_gears(self):
         gear_catalog = [
-            {"name": "Comandante C40 MK4", "brand": "Comandante", "model": "C40 MK4", "gear_type": GearType.GRINDER, "description": "독일제 핸드 그라인더의 정점. 니트로 블레이드 버로 균일한 분쇄를 자랑합니다.", "price_min": 320000, "price_max": 380000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "핸드 그라인더 최고의 분쇄 균일도"},
-            {"name": "Timemore C2 MAX", "brand": "Timemore", "model": "C2 MAX", "gear_type": GearType.GRINDER, "description": "10만원 이하 가성비 핸드 그라인더의 대표주자. 30g 용량으로 2인분까지 커버.", "price_min": 55000, "price_max": 75000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "입문자 최고 가성비"},
-            {"name": "Fellow Ode Gen 2", "brand": "Fellow", "model": "Ode Gen 2", "gear_type": GearType.GRINDER, "description": "미니멀 디자인의 전동 그라인더. SSP 버 호환으로 업그레이드 가능.", "price_min": 350000, "price_max": 400000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "전동 그라인더 입문 추천"},
-            {"name": "DF64 Gen 2", "brand": "Turin", "model": "DF64 Gen 2", "gear_type": GearType.GRINDER, "description": "64mm 플랫버 싱글도징 그라인더. 제로 리텐션에 가까운 성능.", "price_min": 400000, "price_max": 500000, "currency": "KRW", "is_recommended": False},
-            {"name": "1Zpresso J-Max", "brand": "1Zpresso", "model": "J-Max", "gear_type": GearType.GRINDER, "description": "48mm 스테인리스 버. 에스프레소부터 드립까지 올라운드.", "price_min": 200000, "price_max": 250000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "에스프레소 가능한 핸드밀"},
-            {"name": "Hario V60 드리퍼 02", "brand": "Hario", "model": "V60-02", "gear_type": GearType.BREWER, "description": "가장 널리 사용되는 푸어오버 드리퍼. 나선형 리브로 빠른 추출.", "price_min": 8000, "price_max": 15000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "드립 입문의 정석"},
-            {"name": "Kalita Wave 185", "brand": "Kalita", "model": "Wave 185", "gear_type": GearType.BREWER, "description": "플랫 바텀 드리퍼. V60보다 균일하고 안정적인 추출.", "price_min": 25000, "price_max": 35000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "일관된 추출이 장점"},
-            {"name": "AeroPress Original", "brand": "AeroPress", "model": "Original", "gear_type": GearType.BREWER, "description": "세계에서 가장 다재다능한 브루어. 에스프레소부터 콜드브루까지.", "price_min": 40000, "price_max": 55000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "만능 브루어, 여행용으로도 최고"},
-            {"name": "Chemex Classic 6컵", "brand": "Chemex", "model": "Classic 6-Cup", "gear_type": GearType.BREWER, "description": "아이코닉한 디자인의 푸어오버 카라페. 두꺼운 필터로 깔끔한 맛.", "price_min": 60000, "price_max": 80000, "currency": "KRW", "is_recommended": False},
-            {"name": "Clever Dripper", "brand": "Clever", "model": "Large", "gear_type": GearType.BREWER, "description": "침지+드립의 하이브리드. 초보자도 실패 없는 추출.", "price_min": 25000, "price_max": 35000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "초보자에게 가장 추천"},
-            {"name": "Breville Bambino Plus", "brand": "Breville", "model": "Bambino Plus", "gear_type": GearType.ESPRESSO_MACHINE, "description": "컴팩트한 홈 에스프레소 머신. 자동 스팀, 3초 히팅.", "price_min": 450000, "price_max": 550000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "홈 에스프레소 입문 추천"},
-            {"name": "Flair Signature Pro 2", "brand": "Flair", "model": "Signature Pro 2", "gear_type": GearType.ESPRESSO_MACHINE, "description": "레버 수동 에스프레소 메이커. 전기 없이 진정한 에스프레소.", "price_min": 350000, "price_max": 450000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "전기 없이 진짜 에스프레소"},
-            {"name": "Fellow Stagg EKG", "brand": "Fellow", "model": "Stagg EKG", "gear_type": GearType.KETTLE, "description": "정밀 온도 조절 구스넥 전기 케틀. 0.1도 단위 설정.", "price_min": 180000, "price_max": 220000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "푸어오버 필수 장비"},
-            {"name": "Hario Buono", "brand": "Hario", "model": "V60 Buono", "gear_type": GearType.KETTLE, "description": "클래식 구스넥 드립 포트. 가성비 좋은 기본형 케틀.", "price_min": 35000, "price_max": 50000, "currency": "KRW", "is_recommended": False},
-            {"name": "Timemore Black Mirror Plus", "brand": "Timemore", "model": "Black Mirror Plus", "gear_type": GearType.SCALE, "description": "0.1g 정밀도, 플로우레이트 측정, 블루투스 연동.", "price_min": 70000, "price_max": 90000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "가성비 커피 스케일 1위"},
-            {"name": "Acaia Pearl S", "brand": "Acaia", "model": "Pearl S", "gear_type": GearType.SCALE, "description": "프로급 커피 스케일. 앱 연동, 추출 데이터 기록.", "price_min": 200000, "price_max": 250000, "currency": "KRW", "is_recommended": False},
-            {"name": "Hario V60 필터 02", "brand": "Hario", "model": "VCF-02-100W", "gear_type": GearType.FILTER, "description": "V60 전용 화이트 페이퍼 필터 100매.", "price_min": 6000, "price_max": 8000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "V60 사용자 필수"},
-            {"name": "Fellow Atmos 캐니스터", "brand": "Fellow", "model": "Atmos 1.2L", "gear_type": GearType.ACCESSORIES, "description": "진공 밀폐 원두 보관 캐니스터. 원두 신선도 최대 50% 연장.", "price_min": 40000, "price_max": 55000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "원두 보관의 정석"},
-            {"name": "WDT 니들 툴", "brand": "Generic", "model": "WDT Tool", "gear_type": GearType.ACCESSORIES, "description": "에스프레소 퍽 분배용 니들 도구. 채널링 방지 필수 아이템.", "price_min": 15000, "price_max": 30000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "에스프레소 추출 품질 향상"},
-            {"name": "커핑 스푼 세트", "brand": "Brewista", "model": "Cupping Spoon Set", "gear_type": GearType.ACCESSORIES, "description": "SCA 기준 커핑 스푼 6개 세트. 스테인리스 소재.", "price_min": 25000, "price_max": 35000, "currency": "KRW", "is_recommended": False},
+            {"name": "Comandante C40 MK4", "brand": "Comandante", "model": "C40 MK4", "gear_type": GearType.GRINDER, "description": "독일제 핸드 그라인더의 정점. 니트로 블레이드 버로 균일한 분쇄를 자랑합니다.", "image_url": "https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400", "price_min": 320000, "price_max": 380000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "핸드 그라인더 최고의 분쇄 균일도"},
+            {"name": "Timemore C2 MAX", "brand": "Timemore", "model": "C2 MAX", "gear_type": GearType.GRINDER, "description": "10만원 이하 가성비 핸드 그라인더의 대표주자. 30g 용량으로 2인분까지 커버.", "image_url": "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=400", "price_min": 55000, "price_max": 75000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "입문자 최고 가성비"},
+            {"name": "Fellow Ode Gen 2", "brand": "Fellow", "model": "Ode Gen 2", "gear_type": GearType.GRINDER, "description": "미니멀 디자인의 전동 그라인더. SSP 버 호환으로 업그레이드 가능.", "image_url": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400", "price_min": 350000, "price_max": 400000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "전동 그라인더 입문 추천"},
+            {"name": "DF64 Gen 2", "brand": "Turin", "model": "DF64 Gen 2", "gear_type": GearType.GRINDER, "description": "64mm 플랫버 싱글도징 그라인더. 제로 리텐션에 가까운 성능.", "image_url": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400", "price_min": 400000, "price_max": 500000, "currency": "KRW", "is_recommended": False},
+            {"name": "1Zpresso J-Max", "brand": "1Zpresso", "model": "J-Max", "gear_type": GearType.GRINDER, "description": "48mm 스테인리스 버. 에스프레소부터 드립까지 올라운드.", "image_url": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400", "price_min": 200000, "price_max": 250000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "에스프레소 가능한 핸드밀"},
+            {"name": "Hario V60 드리퍼 02", "brand": "Hario", "model": "V60-02", "gear_type": GearType.BREWER, "description": "가장 널리 사용되는 푸어오버 드리퍼. 나선형 리브로 빠른 추출.", "image_url": "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400", "price_min": 8000, "price_max": 15000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "드립 입문의 정석"},
+            {"name": "Kalita Wave 185", "brand": "Kalita", "model": "Wave 185", "gear_type": GearType.BREWER, "description": "플랫 바텀 드리퍼. V60보다 균일하고 안정적인 추출.", "image_url": "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400", "price_min": 25000, "price_max": 35000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "일관된 추출이 장점"},
+            {"name": "AeroPress Original", "brand": "AeroPress", "model": "Original", "gear_type": GearType.BREWER, "description": "세계에서 가장 다재다능한 브루어. 에스프레소부터 콜드브루까지.", "image_url": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400", "price_min": 40000, "price_max": 55000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "만능 브루어, 여행용으로도 최고"},
+            {"name": "Chemex Classic 6컵", "brand": "Chemex", "model": "Classic 6-Cup", "gear_type": GearType.BREWER, "description": "아이코닉한 디자인의 푸어오버 카라페. 두꺼운 필터로 깔끔한 맛.", "image_url": "https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=400", "price_min": 60000, "price_max": 80000, "currency": "KRW", "is_recommended": False},
+            {"name": "Clever Dripper", "brand": "Clever", "model": "Large", "gear_type": GearType.BREWER, "description": "침지+드립의 하이브리드. 초보자도 실패 없는 추출.", "image_url": "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=400", "price_min": 25000, "price_max": 35000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "초보자에게 가장 추천"},
+            {"name": "Breville Bambino Plus", "brand": "Breville", "model": "Bambino Plus", "gear_type": GearType.ESPRESSO_MACHINE, "description": "컴팩트한 홈 에스프레소 머신. 자동 스팀, 3초 히팅.", "image_url": "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=400", "price_min": 450000, "price_max": 550000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "홈 에스프레소 입문 추천"},
+            {"name": "Flair Signature Pro 2", "brand": "Flair", "model": "Signature Pro 2", "gear_type": GearType.ESPRESSO_MACHINE, "description": "레버 수동 에스프레소 메이커. 전기 없이 진정한 에스프레소.", "image_url": "https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=400", "price_min": 350000, "price_max": 450000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "전기 없이 진짜 에스프레소"},
+            {"name": "Fellow Stagg EKG", "brand": "Fellow", "model": "Stagg EKG", "gear_type": GearType.KETTLE, "description": "정밀 온도 조절 구스넥 전기 케틀. 0.1도 단위 설정.", "image_url": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400", "price_min": 180000, "price_max": 220000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "푸어오버 필수 장비"},
+            {"name": "Hario Buono", "brand": "Hario", "model": "V60 Buono", "gear_type": GearType.KETTLE, "description": "클래식 구스넥 드립 포트. 가성비 좋은 기본형 케틀.", "image_url": "https://images.unsplash.com/photo-1518057111178-44a106bad636?w=400", "price_min": 35000, "price_max": 50000, "currency": "KRW", "is_recommended": False},
+            {"name": "Timemore Black Mirror Plus", "brand": "Timemore", "model": "Black Mirror Plus", "gear_type": GearType.SCALE, "description": "0.1g 정밀도, 플로우레이트 측정, 블루투스 연동.", "image_url": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400", "price_min": 70000, "price_max": 90000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "가성비 커피 스케일 1위"},
+            {"name": "Acaia Pearl S", "brand": "Acaia", "model": "Pearl S", "gear_type": GearType.SCALE, "description": "프로급 커피 스케일. 앱 연동, 추출 데이터 기록.", "image_url": "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=400", "price_min": 200000, "price_max": 250000, "currency": "KRW", "is_recommended": False},
+            {"name": "Hario V60 필터 02", "brand": "Hario", "model": "VCF-02-100W", "gear_type": GearType.FILTER, "description": "V60 전용 화이트 페이퍼 필터 100매.", "image_url": "https://images.unsplash.com/photo-1611564494260-6f21b80af7ea?w=400", "price_min": 6000, "price_max": 8000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "V60 사용자 필수"},
+            {"name": "Fellow Atmos 캐니스터", "brand": "Fellow", "model": "Atmos 1.2L", "gear_type": GearType.ACCESSORIES, "description": "진공 밀폐 원두 보관 캐니스터. 원두 신선도 최대 50% 연장.", "image_url": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400", "price_min": 40000, "price_max": 55000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "원두 보관의 정석"},
+            {"name": "WDT 니들 툴", "brand": "Generic", "model": "WDT Tool", "gear_type": GearType.ACCESSORIES, "description": "에스프레소 퍽 분배용 니들 도구. 채널링 방지 필수 아이템.", "image_url": "https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=400", "price_min": 15000, "price_max": 30000, "currency": "KRW", "is_recommended": True, "recommendation_reason": "에스프레소 추출 품질 향상"},
+            {"name": "커핑 스푼 세트", "brand": "Brewista", "model": "Cupping Spoon Set", "gear_type": GearType.ACCESSORIES, "description": "SCA 기준 커핑 스푼 6개 세트. 스테인리스 소재.", "image_url": "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=400", "price_min": 25000, "price_max": 35000, "currency": "KRW", "is_recommended": False},
         ]
 
         gears = []

@@ -203,14 +203,14 @@ const Beans = () => {
                     </h3>
                     <div style={{ fontFamily: "'Fira Code', monospace", fontSize: '0.8rem', color: '#ccc', lineHeight: '1.7' }}>
                       <div><span style={{ color: '#ff79c6' }}>origin</span>: <span style={{ color: '#f1fa8c' }}>"{bean.origin}"</span></div>
-                      <div><span style={{ color: '#ff79c6' }}>region</span>: <span style={{ color: '#f1fa8c' }}>"{bean.region}"</span></div>
-                      <div><span style={{ color: '#ff79c6' }}>process</span>: <span style={{ color: '#f1fa8c' }}>"{bean.process}"</span></div>
-                      <div><span style={{ color: '#ff79c6' }}>altitude</span>: <span style={{ color: '#f1fa8c' }}>"{bean.altitude}"</span></div>
+                      <div><span style={{ color: '#ff79c6' }}>region</span>: <span style={{ color: '#f1fa8c' }}>"{bean.region || bean.farm || ''}"</span></div>
+                      <div><span style={{ color: '#ff79c6' }}>process</span>: <span style={{ color: '#f1fa8c' }}>"{bean.process || bean.processing || ''}"</span></div>
+                      <div><span style={{ color: '#ff79c6' }}>altitude</span>: <span style={{ color: '#f1fa8c' }}>"{bean.altitude || ''}"</span></div>
                     </div>
 
                     {/* Flavor Notes */}
                     <div style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                      {(bean.flavor_notes || []).map((note, idx) => (
+                      {(Array.isArray(bean.flavor_notes) ? bean.flavor_notes : (bean.flavor_notes || '').split(',').map(s => s.trim()).filter(Boolean)).map((note, idx) => (
                         <span key={idx} style={{
                           padding: '2px 8px',
                           background: 'rgba(0, 255, 136, 0.1)',
@@ -235,8 +235,8 @@ const Beans = () => {
                       fontFamily: "'Fira Code', monospace",
                       fontSize: '0.75rem',
                     }}>
-                      <span style={{ color: '#666' }}>{bean.roaster}</span>
-                      <span style={{ color: '#f1fa8c' }}>★ {bean.rating}</span>
+                      <span style={{ color: '#666' }}>{bean.roaster || bean.vendor || ''}</span>
+                      <span style={{ color: '#f1fa8c' }}>{bean.price ? `₩${Number(bean.price).toLocaleString()}` : ''}{bean.rating ? ` ★ ${bean.rating}` : ''}</span>
                     </div>
                   </div>
                 </div>

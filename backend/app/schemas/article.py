@@ -23,6 +23,7 @@ class ArticleResponse(ArticleBase):
     id: int
     author_id: Optional[int] = None
     view_count: int = 0
+    likes_count: int = 0
     created_at: datetime
     published_at: Optional[datetime] = None
 

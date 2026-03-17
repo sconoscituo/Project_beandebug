@@ -8,7 +8,7 @@ const Home = () => {
     const timer = requestAnimationFrame(() => {
       setIsLoaded(true);
     });
-    
+
     return () => cancelAnimationFrame(timer);
   }, []);
 
@@ -16,13 +16,28 @@ const Home = () => {
     { id: 1, title: 'V60 기본 레시피', description: '깔끔하고 밝은 산미를 즐길 수 있는 기본 V60 추출법', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400', method: 'V60', time: '3분', rating: 4.8 },
     { id: 2, title: '에어로프레스 인버트', description: '풍부한 바디감과 깊은 풍미의 인버트 방식', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400', method: 'Aeropress', time: '2분', rating: 4.7 },
     { id: 3, title: '콜드브루 12시간', description: '부드럽고 달콤한 콜드브루 레시피', image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400', method: 'Cold Brew', time: '12시간', rating: 4.9 },
-    { id: 4, title: '모카포트 에스프레소', description: '집에서 즐기는 진한 에스프레소 스타일', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400', method: 'Moka Pot', time: '5분', rating: 4.6 }
+    { id: 4, title: '모카포트 에스프레소', description: '집에서 즐기는 진한 에스프레소 스타일', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400', method: 'Moka Pot', time: '5분', rating: 4.6 },
+    { id: 5, title: 'V60 46 메서드', description: '4:6 메서드로 맛의 밸런스를 자유롭게 조절', image: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400', method: 'V60', time: '3분30초', rating: 4.7 },
+    { id: 6, title: '캐맥스 4인분', description: '두꺼운 필터로 깔끔하고 스위트한 맛', image: 'https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=400', method: 'Chemex', time: '4분30초', rating: 4.5 },
+    { id: 7, title: '프렌치프레스 클래식', description: '묵직한 바디감과 오일리한 질감', image: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400', method: 'French Press', time: '4분', rating: 4.6 },
+    { id: 8, title: '에스프레소 토닉', description: '여름 시그니처 에스프레소 토닉', image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400', method: 'Espresso', time: '2분', rating: 4.8 },
   ];
 
   const latestArticles = [
-    { id: 1, title: '2026 스페셜티 커피 트렌드', category: 'TREND', image: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400', date: '2026.02.04' },
-    { id: 2, title: '홈카페 그라인더 선택 가이드', category: 'GEAR', image: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400', date: '2026.02.03' },
-    { id: 3, title: '에티오피아 vs 케냐 원두 비교', category: 'BEAN', image: 'https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=400', date: '2026.02.02' }
+    { id: 1, title: '2026 스페셜티 커피 트렌드 TOP 10', category: 'TREND', image: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400', date: '2026.03.15' },
+    { id: 2, title: '홈카페 그라인더 선택 가이드', category: 'GEAR', image: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=400', date: '2026.03.14' },
+    { id: 3, title: '에티오피아 vs 케냐 원두 비교', category: 'BEAN', image: 'https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=400', date: '2026.03.12' },
+    { id: 4, title: '라떼아트 입문 가이드', category: 'GUIDE', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400', date: '2026.03.10' },
+    { id: 5, title: 'V60 마스터 클래스: 프로의 비밀', category: 'GUIDE', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400', date: '2026.03.08' },
+    { id: 6, title: '커피와 건강: 최신 연구 결과', category: 'HEALTH', image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400', date: '2026.03.06' },
+  ];
+
+  const trendingBeans = [
+    { id: 1, name: '파나마 게이샤', origin: 'Panama', rating: 5.0, tag: 'HOT' },
+    { id: 2, name: '에티오피아 시다모 내추럴', origin: 'Ethiopia', rating: 4.9, tag: 'NEW' },
+    { id: 3, name: '콜드브루용 브라질 블렌드', origin: 'Brazil', rating: 4.8, tag: 'TRENDING' },
+    { id: 4, name: '케냐 AA 니에리', origin: 'Kenya', rating: 4.8, tag: 'CLASSIC' },
+    { id: 5, name: '코스타리카 허니', origin: 'Costa Rica', rating: 4.7, tag: 'SWEET' },
   ];
 
   return (
@@ -37,7 +52,6 @@ const Home = () => {
             opacity: isLoaded ? 1 : 0,
             transform: isLoaded ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 0.8s ease',
-            
           }}>
             <h1 style={{
               fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
@@ -50,8 +64,8 @@ const Home = () => {
                 커피의 세계를
               </span>
               <span style={{ display: 'inline-block', whiteSpace: 'nowrap', marginLeft: '15px' }}>
-                <span style={{ 
-                  color: '#00ff88', 
+                <span style={{
+                  color: '#00ff88',
                   fontFamily: "'Fira Code', monospace",
                   fontWeight: '600'
                 }}>
@@ -66,7 +80,7 @@ const Home = () => {
               그리고 나만의 레시피까지. <br />
               Bean Debug에서 모든 것을 기록하고 분석해보세요.
             </p>
-            
+
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
               <Link to="/recipes" className="btn-primary">
                 레시피 탐색하기 →
@@ -79,6 +93,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Popular Recipes */}
       <section className="section">
         <div className="section-header">
           <h2 className="section-title">인기 레시피</h2>
@@ -107,6 +122,55 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Trending Beans */}
+      <section style={{ background: '#0a0a0a', padding: '4rem 2rem' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <h2 style={{ fontFamily: "'Fira Code', monospace", fontSize: '1.5rem', color: '#00ff88' }}>
+              <span style={{ color: '#888' }}>$</span> trending --beans
+            </h2>
+            <Link to="/beans" style={{ fontFamily: "'Fira Code', monospace", fontSize: '0.85rem', color: '#00ff88', textDecoration: 'none' }}>
+              전체보기 →
+            </Link>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' }}>
+            {trendingBeans.map((bean, index) => (
+              <Link key={bean.id} to={`/beans/${bean.id}`} style={{ textDecoration: 'none' }}>
+                <div style={{
+                  background: '#1e1e1e',
+                  border: '1px solid #333',
+                  borderRadius: '8px',
+                  padding: '1.25rem',
+                  transition: 'all 0.3s ease',
+                  opacity: isLoaded ? 1 : 0,
+                  transform: isLoaded ? 'translateY(0)' : 'translateY(20px)',
+                  transitionDelay: `${index * 0.08}s`,
+                }}
+                  onMouseOver={(e) => { e.currentTarget.style.borderColor = '#00ff88'; }}
+                  onMouseOut={(e) => { e.currentTarget.style.borderColor = '#333'; }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                    <span style={{ fontFamily: "'Fira Code', monospace", fontSize: '0.65rem', padding: '2px 6px', background: '#00ff88', color: '#0a0a0a', borderRadius: '3px', fontWeight: '700' }}>
+                      {bean.tag}
+                    </span>
+                    <span style={{ fontFamily: "'Fira Code', monospace", fontSize: '0.75rem', color: '#f1fa8c' }}>
+                      ★ {bean.rating}
+                    </span>
+                  </div>
+                  <h3 style={{ fontFamily: "'Fira Code', monospace", fontSize: '0.9rem', color: '#fff', marginBottom: '0.25rem' }}>
+                    {bean.name}
+                  </h3>
+                  <span style={{ fontFamily: "'Fira Code', monospace", fontSize: '0.75rem', color: '#666' }}>
+                    {bean.origin}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Bean of the Month */}
       <section className="featured-section">
         <div className="featured-content">
           <div className="featured-text">
@@ -124,9 +188,10 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Latest Articles */}
       <section className="section">
         <div className="section-header">
-          <h2 className="section-title">Recent Article</h2>
+          <h2 className="section-title">Recent Articles</h2>
           <Link to="/articles" className="section-link">전체보기 →</Link>
         </div>
         <div className="card-grid">
@@ -150,6 +215,7 @@ const Home = () => {
         </div>
       </section>
 
+      {/* CTA */}
       <section style={{ background: 'linear-gradient(135deg, #f5f1eb 0%, #e8e0d5 100%)', padding: '5rem 2rem', textAlign: 'center' }}>
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '2.5rem', color: '#2C1810', marginBottom: '1rem' }}>
           나만의 커피 여정을 시작하세요
@@ -161,13 +227,14 @@ const Home = () => {
         <Link to="/register" className="btn-primary" style={{ background: '#2C1810', color: '#ffffff' }}>무료로 시작하기 →</Link>
       </section>
 
+      {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
           <div>
             <div className="footer-logo">Bean Debug</div>
             <p className="footer-description">커피 추출의 모든 것을 기록하고<br />분석하는 플랫폼</p>
           </div>
-          <div><h4 className="footer-title">서비스</h4><ul className="footer-links"><li><Link to="/recipes">Recipes</Link></li><li><Link to="/beans">Beans</Link></li><li><Link to="/gears">Gear</Link></li><li><Link to="/articles">Article</Link></li></ul></div>
+          <div><h4 className="footer-title">서비스</h4><ul className="footer-links"><li><Link to="/recipes">Recipes</Link></li><li><Link to="/beans">Beans</Link></li><li><Link to="/gears">Gear</Link></li><li><Link to="/articles">Articles</Link></li></ul></div>
           <div><h4 className="footer-title">Community</h4><ul className="footer-links"><li><Link to="/community">커뮤니티</Link></li><li><Link to="/guides">브루잉 가이드</Link></li><li><a href="#">FAQ</a></li></ul></div>
           <div><h4 className="footer-title">문의</h4><ul className="footer-links"><li><a href="mailto:hello@beandebug.com">hello@beandebug.com</a></li><li><a href="#">Instagram</a></li><li><a href="#">GitHub</a></li></ul></div>
         </div>

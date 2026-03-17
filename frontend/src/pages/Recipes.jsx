@@ -1,73 +1,104 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { recipesAPI } from '../api';
+import { sampleRecipes } from '../data/sampleData';
+import Pagination from '../components/Pagination';
+
+const PAGE_SIZE = 12;
 
 const Recipes = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState('recent');
   const [filter, setFilter] = useState('all');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [usingFallback, setUsingFallback] = useState(false);
+
+  const brewMethods = [
+    { id: 'all', name: 'All', icon: '☕' },
+    { id: 'V60', name: 'V60', icon: '🔻' },
+    { id: 'Aeropress', name: 'Aeropress', icon: '💨' },
+    { id: 'French Press', name: 'French Press', icon: '🫖' },
+    { id: 'Moka Pot', name: 'Moka Pot', icon: '☕' },
+    { id: 'Cold Brew', name: 'Cold Brew', icon: '🧊' },
+    { id: 'Espresso', name: 'Espresso', icon: '⚡' },
+    { id: 'Chemex', name: 'Chemex', icon: '🧪' },
+  ];
 
   useEffect(() => {
     loadRecipes();
-  }, [sortBy]);
+  }, [filter, sortBy, page]);
 
   const loadRecipes = async () => {
+    setLoading(true);
     try {
-      const data = await recipesAPI.getPublicRecipes({ sort_by: sortBy, limit: 50 });
-      setRecipes(data);
-    } catch (error) {
-      console.error('Failed to load recipes:', error);
+      const params = { sort_by: sortBy, page, page_size: PAGE_SIZE };
+      if (filter !== 'all') params.brew_method = filter;
+      const data = await recipesAPI.getPublicRecipes(params);
+      const items = data.items ?? data;
+      if (!Array.isArray(items) || items.length === 0) throw new Error('empty');
+      setRecipes(items);
+      setTotalPages(data.total_pages ?? 1);
+      setUsingFallback(false);
+    } catch {
+      // Fall back to sample data with client-side filter + sort + pagination
+      let filtered = filter === 'all'
+        ? sampleRecipes
+        : sampleRecipes.filter((r) => r.brew_method === filter);
+
+      if (sortBy === 'popular') {
+        filtered = [...filtered].sort((a, b) => (b.likes_count || 0) - (a.likes_count || 0));
+      } else if (sortBy === 'rating') {
+        filtered = [...filtered].sort((a, b) => (b.overall_rating || 0) - (a.overall_rating || 0));
+      }
+
+      const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+      setTotalPages(pages);
+      const start = (page - 1) * PAGE_SIZE;
+      setRecipes(filtered.slice(start, start + PAGE_SIZE));
+      setUsingFallback(true);
     } finally {
       setLoading(false);
     }
   };
 
-  const brewMethods = [
-    { id: 'all', name: 'All', icon: '☕' },
-    { id: 'v60', name: 'V60', icon: '🔻' },
-    { id: 'aeropress', name: 'Aeropress', icon: '💨' },
-    { id: 'french_press', name: 'French Press', icon: '🫖' },
-    { id: 'moka_pot', name: 'Moka Pot', icon: '☕' },
-    { id: 'cold_brew', name: 'Cold Brew', icon: '🧊' },
-  ];
+  const handleFilterChange = (methodId) => {
+    setFilter(methodId);
+    setPage(1);
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+    setPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
       paddingTop: '120px',
-      paddingBottom: '4rem'
+      paddingBottom: '4rem',
     }}>
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '0 2rem'
-      }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 2rem' }}>
         {/* Header */}
         <div style={{ marginBottom: '2rem' }}>
-          <div style={{
-            fontFamily: "'Fira Code', monospace",
-            color: '#888',
-            fontSize: '0.9rem',
-            marginBottom: '0.5rem'
-          }}>
+          <div style={{ fontFamily: "'Fira Code', monospace", color: '#888', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
             <span style={{ color: '#00ff88' }}>$</span> ls ./recipes
           </div>
-          <h1 style={{
-            fontFamily: "'Fira Code', monospace",
-            fontSize: '2.5rem',
-            color: '#00ff88',
-            marginBottom: '0.5rem'
-          }}>
+          <h1 style={{ fontFamily: "'Fira Code', monospace", fontSize: '2.5rem', color: '#00ff88', marginBottom: '0.5rem' }}>
             Brewing Recipes
           </h1>
-          <p style={{
-            color: '#666',
-            fontFamily: "'Fira Code', monospace",
-            fontSize: '0.9rem'
-          }}>
+          <p style={{ color: '#666', fontFamily: "'Fira Code', monospace", fontSize: '0.9rem' }}>
             // 커뮤니티의 다양한 추출 레시피를 탐색하세요
+            {usingFallback && (
+              <span style={{ color: '#444', marginLeft: '1rem' }}>// [sample data]</span>
+            )}
           </p>
         </div>
 
@@ -78,7 +109,7 @@ const Recipes = () => {
           alignItems: 'center',
           marginBottom: '2rem',
           flexWrap: 'wrap',
-          gap: '1rem'
+          gap: '1rem',
         }}>
           {/* Filter Tabs */}
           <div style={{
@@ -87,12 +118,12 @@ const Recipes = () => {
             overflowX: 'auto',
             paddingBottom: '0.5rem',
             WebkitOverflowScrolling: 'touch',
-            scrollbarWidth: 'none'
+            scrollbarWidth: 'none',
           }}>
             {brewMethods.map((method) => (
               <button
                 key={method.id}
-                onClick={() => setFilter(method.id)}
+                onClick={() => handleFilterChange(method.id)}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -106,7 +137,7 @@ const Recipes = () => {
                   fontSize: '0.8rem',
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',
-                  transition: 'all 0.3s ease'
+                  transition: 'all 0.3s ease',
                 }}
               >
                 <span>{method.icon}</span>
@@ -119,7 +150,7 @@ const Recipes = () => {
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={handleSortChange}
               style={{
                 padding: '0.5rem 1rem',
                 background: '#1e1e1e',
@@ -128,15 +159,15 @@ const Recipes = () => {
                 color: '#888',
                 fontFamily: "'Fira Code', monospace",
                 fontSize: '0.85rem',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             >
               <option value="recent">최신순</option>
               <option value="popular">인기순</option>
               <option value="rating">평점순</option>
             </select>
-            <Link 
-              to="/my-recipes/new" 
+            <Link
+              to="/my-recipes/new"
               style={{
                 padding: '0.5rem 1.25rem',
                 background: '#00ff88',
@@ -146,7 +177,7 @@ const Recipes = () => {
                 fontFamily: "'Fira Code', monospace",
                 fontSize: '0.85rem',
                 fontWeight: '600',
-                whiteSpace: 'nowrap'
+                whiteSpace: 'nowrap',
               }}
             >
               + new()
@@ -156,42 +187,28 @@ const Recipes = () => {
 
         {/* Recipe Grid */}
         {loading ? (
-          <div style={{
-            textAlign: 'center',
-            padding: '4rem',
-            fontFamily: "'Fira Code', monospace",
-            color: '#00ff88'
-          }}>
+          <div style={{ textAlign: 'center', padding: '4rem', fontFamily: "'Fira Code', monospace", color: '#00ff88' }}>
             <span className="loading-cursor">Loading recipes...</span>
           </div>
         ) : recipes.length === 0 ? (
-          <div style={{
-            textAlign: 'center',
-            padding: '4rem',
-            fontFamily: "'Fira Code', monospace",
-            color: '#666'
-          }}>
+          <div style={{ textAlign: 'center', padding: '4rem', fontFamily: "'Fira Code', monospace", color: '#666' }}>
             // No recipes found. Be the first to share!
           </div>
         ) : (
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-            gap: '1.5rem'
+            gap: '1.5rem',
           }}>
             {recipes.map((recipe) => (
-              <Link
-                key={recipe.id}
-                to={`/recipes/${recipe.id}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <div 
+              <Link key={recipe.id} to={`/recipes/${recipe.id}`} style={{ textDecoration: 'none' }}>
+                <div
                   style={{
                     background: '#1e1e1e',
                     borderRadius: '12px',
                     border: '1px solid #333',
                     overflow: 'hidden',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
                   }}
                   onMouseOver={(e) => {
                     e.currentTarget.style.borderColor = '#00ff88';
@@ -209,37 +226,26 @@ const Recipes = () => {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '8px',
-                    borderBottom: '1px solid #333'
+                    borderBottom: '1px solid #333',
                   }}>
-                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }}></div>
-                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }}></div>
-                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27ca3f' }}></div>
-                    <span style={{
-                      marginLeft: '8px',
-                      color: '#888',
-                      fontFamily: "'Fira Code', monospace",
-                      fontSize: '0.75rem'
-                    }}>
-                      {recipe.brew_method?.toLowerCase() || 'recipe'}.js
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }} />
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27ca3f' }} />
+                    <span style={{ marginLeft: '8px', color: '#888', fontFamily: "'Fira Code', monospace", fontSize: '0.75rem' }}>
+                      {recipe.brew_method?.toLowerCase().replace(/\s+/g, '_') || 'recipe'}.js
                     </span>
                   </div>
 
                   {/* Card Body */}
                   <div style={{ padding: '1.25rem' }}>
-                    {/* Title & Method */}
                     <div style={{
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'flex-start',
                       marginBottom: '1rem',
-                      gap: '0.5rem'
+                      gap: '0.5rem',
                     }}>
-                      <h3 style={{
-                        fontFamily: "'Fira Code', monospace",
-                        fontSize: '1rem',
-                        color: '#00ff88',
-                        margin: 0
-                      }}>
+                      <h3 style={{ fontFamily: "'Fira Code', monospace", fontSize: '1rem', color: '#00ff88', margin: 0 }}>
                         {recipe.title}
                       </h3>
                       <span style={{
@@ -250,13 +256,12 @@ const Recipes = () => {
                         color: '#00ff88',
                         fontFamily: "'Fira Code', monospace",
                         fontSize: '0.7rem',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
                       }}>
                         {recipe.brew_method}
                       </span>
                     </div>
 
-                    {/* Description */}
                     {recipe.description && (
                       <p style={{
                         fontFamily: "'Fira Code', monospace",
@@ -268,19 +273,13 @@ const Recipes = () => {
                         textOverflow: 'ellipsis',
                         display: '-webkit-box',
                         WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical'
+                        WebkitBoxOrient: 'vertical',
                       }}>
                         // {recipe.description}
                       </p>
                     )}
 
-                    {/* Recipe Details */}
-                    <div style={{
-                      fontFamily: "'Fira Code', monospace",
-                      fontSize: '0.8rem',
-                      color: '#ccc',
-                      lineHeight: '1.7'
-                    }}>
+                    <div style={{ fontFamily: "'Fira Code', monospace", fontSize: '0.8rem', color: '#ccc', lineHeight: '1.7' }}>
                       <div>
                         <span style={{ color: '#ff79c6' }}>coffee</span>
                         <span style={{ color: '#888' }}>: </span>
@@ -298,7 +297,6 @@ const Recipes = () => {
                       </div>
                     </div>
 
-                    {/* Footer */}
                     <div style={{
                       marginTop: '1rem',
                       paddingTop: '1rem',
@@ -307,16 +305,14 @@ const Recipes = () => {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       fontFamily: "'Fira Code', monospace",
-                      fontSize: '0.75rem'
+                      fontSize: '0.75rem',
                     }}>
                       <div style={{ display: 'flex', gap: '1rem', color: '#666' }}>
                         <span style={{ color: '#ff79c6' }}>♥ {recipe.likes_count || 0}</span>
                         <span style={{ color: '#8be9fd' }}>👁 {recipe.view_count || 0}</span>
                       </div>
                       {recipe.overall_rating && (
-                        <span style={{ color: '#f1fa8c' }}>
-                          ★ {recipe.overall_rating.toFixed(1)}
-                        </span>
+                        <span style={{ color: '#f1fa8c' }}>★ {recipe.overall_rating.toFixed(1)}</span>
                       )}
                     </div>
                   </div>
@@ -325,6 +321,8 @@ const Recipes = () => {
             ))}
           </div>
         )}
+
+        <Pagination page={page} totalPages={totalPages} onPageChange={handlePageChange} />
       </div>
 
       <style>{`

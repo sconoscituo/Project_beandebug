@@ -1,25 +1,27 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: coffeelab_db_prod
+    container_name: beandebug_db_prod
     environment:
       POSTGRES_USER: ${DB_USER:-coffeelab}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME:-coffeelab_db}
     volumes:
-      - postgres_data_prod:/var/lib/postgresql/data
-    networks:
-      - coffeelab-network
-    restart: unless-stopped
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-coffeelab}"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - beandebug-network
+    restart: unless-stopped
 
   api:
     image: ${DOCKER_USERNAME}/beandebug-api:latest
-    container_name: coffeelab_api_prod
+    container_name: beandebug_api_prod
+    ports:
+      - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://${DB_USER:-coffeelab}:${DB_PASSWORD}@db:5432/${DB_NAME:-coffeelab_db}
       - SECRET_KEY=${SECRET_KEY}
@@ -30,7 +32,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - coffeelab-network
+      - beandebug-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
@@ -41,13 +43,13 @@ services:
 
   frontend:
     image: ${DOCKER_USERNAME}/beandebug-frontend:latest
-    container_name: coffeelab_frontend_prod
+    container_name: beandebug_frontend_prod
     ports:
       - "80:80"
     depends_on:
       - api
     networks:
-      - coffeelab-network
+      - beandebug-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "wget -q --tries=1 --spider http://localhost:80/health || exit 1"]
@@ -56,8 +58,8 @@ services:
       retries: 3
 
 volumes:
-  postgres_data_prod:
+  postgres_data:
 
 networks:
-  coffeelab-network:
+  beandebug-network:
     driver: bridge

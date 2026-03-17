@@ -5,10 +5,10 @@ from .article import ArticleCreate, ArticleUpdate, ArticleResponse
 from .gear import GearCreate, GearUpdate, GearResponse
 from .gear_review import GearReviewCreate, GearReviewUpdate, GearReviewResponse
 from .comment import (
-    RecipeCommentCreate, 
-    ArticleCommentCreate, 
+    RecipeCommentCreate,
+    ArticleCommentCreate,
     CommentUpdate,
-    RecipeCommentResponse, 
+    RecipeCommentResponse,
     ArticleCommentResponse
 )
 from .featured import (
@@ -17,3 +17,4 @@ from .featured import (
     FeaturedRecipeCreate,
     FeaturedRecipeResponse
 )
+from .pagination import PaginatedResponse, PaginationParams

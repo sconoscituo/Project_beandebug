@@ -58,7 +58,15 @@ jobs:
             git pull origin main
 
             # inject env
-            echo "${{ secrets.ENV_FILE }}" > .env
+            cat > .env << 'ENVEOF'
+            DB_USER=${{ secrets.DATABASE_USER }}
+            DB_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            DB_NAME=${{ secrets.DATABASE_NAME }}
+            SECRET_KEY=${{ secrets.SECRET_KEY }}
+            ALLOWED_ORIGINS=${{ secrets.ALLOWED_ORIGINS }}
+            DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            ENVEOF
+            sed -i 's/^            //' .env
 
             # pull images
             docker pull ${{ secrets.DOCKER_USERNAME }}/beandebug-api:latest
@@ -67,6 +75,21 @@ jobs:
             # restart
             docker-compose -f docker-compose.prod.yml down
             DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} docker-compose -f docker-compose.prod.yml up -d
+
+            # wait for API to be ready
+            echo "Waiting for API health check..."
+            for i in $(seq 1 30); do
+              if curl -sf http://localhost:8000/health > /dev/null 2>&1; then
+                echo "API is healthy!"
+                break
+              fi
+              echo "Attempt $i/30..."
+              sleep 2
+            done
+
+            # seed database (idempotent - skips if already seeded)
+            echo "Seeding database..."
+            curl -sf -X POST http://localhost:8000/seed || echo "Seed request sent"
 
             # cleanup
             docker image prune -f

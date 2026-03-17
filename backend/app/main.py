@@ -1,23 +1,29 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy.orm import Session
 import os
-from .database.connection import engine, Base, settings
+
+from .database.connection import engine, Base, settings, get_db
 from .routers import (
-    auth_router,
-    beans_router,
-    recipes_router,
-    articles_router,
-    gears_router,
-    featured_router
+    auth_router, beans_router, recipes_router,
+    articles_router, gears_router, featured_router
 )
+from .core.config import get_global_config
+from .core.logging import setup_logging, get_logger
+from .core.security import SecurityMiddleware
+from .services import SeedFactory
+
+config = get_global_config()
+setup_logging(settings.debug)
+logger = get_logger("main")
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title=settings.app_name,
+    title=config.APP_NAME,
     description="Coffee brewing recipe management and community platform - Debug your coffee!",
-    version="1.0.0",
+    version=config.APP_VERSION,
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -29,6 +35,7 @@ app.mount("/media", StaticFiles(directory="uploads"), name="media")
 
 allowed_origins = [o.strip() for o in settings.allowed_origins.split(",") if o.strip()]
 
+app.add_middleware(SecurityMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
@@ -44,18 +51,25 @@ app.include_router(articles_router)
 app.include_router(gears_router)
 app.include_router(featured_router)
 
+
 @app.get("/")
 def read_root():
     return {
-        "message": "Welcome to Bean Debug API",
+        "message": f"Welcome to {config.APP_NAME} API",
         "tagline": "Debug your coffee, one brew at a time",
-        "version": "1.0.0",
+        "version": config.APP_VERSION,
         "docs": "/docs"
     }
 
+
 @app.get("/health")
 def health_check():
-    return {
-        "status": "healthy",
-        "service": settings.app_name
-    }
+    return {"status": "healthy", "service": config.APP_NAME}
+
+
+@app.post("/seed")
+def seed_database(db: Session = Depends(get_db)):
+    factory = SeedFactory(db)
+    result = factory.seed_all()
+    logger.info(f"Seed result: {result}")
+    return result

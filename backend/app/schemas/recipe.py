@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
 
@@ -15,11 +15,11 @@ class RecipeBase(BaseModel):
     ratio: Optional[str] = None
     steps: Optional[str] = None
     tips: Optional[str] = None
-    taste_rating: Optional[int] = None
-    body_rating: Optional[int] = None
-    acidity_rating: Optional[int] = None
-    sweetness_rating: Optional[int] = None
-    overall_rating: Optional[float] = None
+    taste_rating: Optional[int] = Field(None, ge=1, le=5)
+    body_rating: Optional[int] = Field(None, ge=1, le=5)
+    acidity_rating: Optional[int] = Field(None, ge=1, le=5)
+    sweetness_rating: Optional[int] = Field(None, ge=1, le=5)
+    overall_rating: Optional[float] = Field(None, ge=1.0, le=5.0)
     notes: Optional[str] = None
     is_public: bool = False
 

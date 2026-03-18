@@ -6,48 +6,26 @@ const RecipeDetail = () => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let mounted = true;
+
+    const loadRecipe = async () => {
+      try {
+        setError(null);
+        const data = await recipesAPI.getRecipe(id);
+        if (mounted) setRecipe(data);
+      } catch (err) {
+        if (mounted) setError(err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
     loadRecipe();
+    return () => { mounted = false; };
   }, [id]);
-
-  const loadRecipe = async () => {
-    try {
-      const data = await recipesAPI.getRecipe(id);
-      setRecipe(data);
-    } catch (error) {
-      console.error('Failed to load recipe:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const sampleRecipe = {
-    id: 1,
-    title: 'V60 기본 레시피',
-    brew_method: 'V60',
-    description: '깔끔하고 밝은 산미를 즐길 수 있는 기본 V60 추출법입니다. 초보자도 쉽게 따라할 수 있어요.',
-    coffee_amount: 18,
-    water_amount: 300,
-    water_temp: 93,
-    grind_size: 'Medium-Fine',
-    brew_time: '3:00',
-    ratio: '1:16.7',
-    steps: [
-      '필터를 린싱하고 커피를 담습니다',
-      '30g 물로 30초간 블루밍',
-      '원을 그리며 천천히 푸어링',
-      '2분 30초에 추출 완료'
-    ],
-    tips: '물줄기를 일정하게 유지하세요',
-    likes_count: 124,
-    view_count: 1520,
-    overall_rating: 4.8,
-    author: { username: 'coffee_master' },
-    created_at: '2026-02-15'
-  };
-
-  const displayRecipe = recipe || sampleRecipe;
 
   if (loading) {
     return (
@@ -66,6 +44,28 @@ const RecipeDetail = () => {
     );
   }
 
+  if (error || !recipe) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
+        paddingTop: '120px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '1rem'
+      }}>
+        <span style={{ color: '#ff5f56', fontFamily: "'Fira Code', monospace", fontSize: '1.2rem' }}>
+          ERROR: RECIPE_NOT_FOUND
+        </span>
+        <Link to="/recipes" style={{ color: '#00ff88', fontFamily: "'Fira Code', monospace", fontSize: '0.85rem' }}>
+          ← back to recipes
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -74,8 +74,7 @@ const RecipeDetail = () => {
       paddingBottom: '4rem'
     }}>
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 2rem' }}>
-        
-        {/* Back Button */}
+
         <Link to="/recipes" style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -89,7 +88,6 @@ const RecipeDetail = () => {
           ← back to recipes
         </Link>
 
-        {/* Main Card */}
         <div style={{
           background: '#1e1e1e',
           borderRadius: '12px',
@@ -114,7 +112,7 @@ const RecipeDetail = () => {
               fontFamily: "'Fira Code', monospace",
               fontSize: '0.85rem'
             }}>
-              {displayRecipe.brew_method?.toLowerCase()}_recipe.js
+              {recipe.brew_method?.toLowerCase()}_recipe.js
             </span>
           </div>
 
@@ -127,7 +125,7 @@ const RecipeDetail = () => {
                 color: '#00ff88',
                 marginBottom: '0.5rem'
               }}>
-                {displayRecipe.title}
+                {recipe.title}
               </h1>
               <div style={{
                 display: 'flex',
@@ -136,9 +134,9 @@ const RecipeDetail = () => {
                 fontSize: '0.8rem',
                 color: '#666'
               }}>
-                <span>@{displayRecipe.author?.username}</span>
-                <span>{displayRecipe.created_at}</span>
-                <span style={{ color: '#f1fa8c' }}>★ {displayRecipe.overall_rating}</span>
+                <span>@{recipe.author?.username}</span>
+                <span>{recipe.created_at}</span>
+                <span style={{ color: '#f1fa8c' }}>★ {recipe.overall_rating}</span>
               </div>
             </div>
 
@@ -152,7 +150,7 @@ const RecipeDetail = () => {
               paddingBottom: '1.5rem',
               borderBottom: '1px solid #333'
             }}>
-              // {displayRecipe.description}
+              // {recipe.description}
             </p>
 
             {/* Recipe Parameters */}
@@ -163,12 +161,12 @@ const RecipeDetail = () => {
               marginBottom: '2rem'
             }}>
               {[
-                { label: 'coffee', value: `${displayRecipe.coffee_amount}g` },
-                { label: 'water', value: `${displayRecipe.water_amount}ml` },
-                { label: 'temp', value: `${displayRecipe.water_temp}°C` },
-                { label: 'grind', value: displayRecipe.grind_size },
-                { label: 'time', value: displayRecipe.brew_time },
-                { label: 'ratio', value: displayRecipe.ratio }
+                { label: 'coffee', value: recipe.coffee_amount ? `${recipe.coffee_amount}g` : '-' },
+                { label: 'water', value: recipe.water_amount ? `${recipe.water_amount}ml` : '-' },
+                { label: 'temp', value: recipe.water_temp ? `${recipe.water_temp}°C` : '-' },
+                { label: 'grind', value: recipe.grind_size || '-' },
+                { label: 'time', value: recipe.brew_time ? `${recipe.brew_time}s` : '-' },
+                { label: 'ratio', value: recipe.ratio || '-' }
               ].map((item, idx) => (
                 <div key={idx} style={{
                   background: '#2d2d2d',
@@ -195,32 +193,34 @@ const RecipeDetail = () => {
               ))}
             </div>
 
-            {/* Steps */}
-            <div style={{ marginBottom: '2rem' }}>
-              <h3 style={{
-                fontFamily: "'Fira Code', monospace",
-                fontSize: '1rem',
-                color: '#00ff88',
-                marginBottom: '1rem'
-              }}>
-                // Steps
-              </h3>
-              <div style={{
-                fontFamily: "'Fira Code', monospace",
-                fontSize: '0.85rem',
-                color: '#ccc',
-                lineHeight: 2
-              }}>
-                {displayRecipe.steps?.map((step, idx) => (
-                  <div key={idx}>
-                    <span style={{ color: '#bd93f9' }}>{idx + 1}.</span> {step}
-                  </div>
-                ))}
+            {/* Steps — backend returns string, split by newline */}
+            {recipe.steps && (
+              <div style={{ marginBottom: '2rem' }}>
+                <h3 style={{
+                  fontFamily: "'Fira Code', monospace",
+                  fontSize: '1rem',
+                  color: '#00ff88',
+                  marginBottom: '1rem'
+                }}>
+                  // Steps
+                </h3>
+                <div style={{
+                  fontFamily: "'Fira Code', monospace",
+                  fontSize: '0.85rem',
+                  color: '#ccc',
+                  lineHeight: 2
+                }}>
+                  {recipe.steps.split('\n').filter(Boolean).map((step, idx) => (
+                    <div key={idx}>
+                      <span style={{ color: '#bd93f9' }}>{idx + 1}.</span> {step}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Tips */}
-            {displayRecipe.tips && (
+            {recipe.tips && (
               <div style={{
                 background: 'rgba(0, 255, 136, 0.1)',
                 border: '1px solid rgba(0, 255, 136, 0.3)',
@@ -233,7 +233,7 @@ const RecipeDetail = () => {
                   fontSize: '0.85rem',
                   color: '#00ff88'
                 }}>
-                  💡 Tip: {displayRecipe.tips}
+                  Tip: {recipe.tips}
                 </span>
               </div>
             )}
@@ -247,8 +247,8 @@ const RecipeDetail = () => {
               fontFamily: "'Fira Code', monospace",
               fontSize: '0.85rem'
             }}>
-              <span style={{ color: '#ff79c6' }}>♥ {displayRecipe.likes_count} likes</span>
-              <span style={{ color: '#8be9fd' }}>👁 {displayRecipe.view_count} views</span>
+              <span style={{ color: '#ff79c6' }}>♥ {recipe.likes_count} likes</span>
+              <span style={{ color: '#8be9fd' }}>👁 {recipe.view_count} views</span>
             </div>
           </div>
         </div>

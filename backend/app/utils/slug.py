@@ -1,4 +1,5 @@
 import re
+import secrets
 from datetime import datetime, timezone
 
 def slugify(text: str) -> str:
@@ -7,4 +8,4 @@ def slugify(text: str) -> str:
     text = re.sub(r'[-\s]+', '-', text)
     text = text.strip('-')
     timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
-    return f"{text}-{timestamp}"
+    return f"{text}-{timestamp}-{secrets.token_hex(4)}"

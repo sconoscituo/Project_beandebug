@@ -1,27 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { articlesAPI } from '../api';
 
 const ArticleDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchArticleDetail = async () => {
+    let mounted = true;
+
+    const fetchArticle = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:8000/api/articles/${id}`);
-        if (!response.ok) throw new Error('FETCH_FAILED');
-        const data = await response.json();
-        setArticle(data);
-      } catch (error) {
-        console.error("System Error:", error);
+        setError(null);
+        const data = await articlesAPI.getArticle(id);
+        if (mounted) setArticle(data);
+      } catch (err) {
+        if (mounted) setError(err);
       } finally {
-        setLoading(false);
+        if (mounted) setLoading(false);
       }
     };
-    fetchArticleDetail();
+
+    fetchArticle();
+    return () => { mounted = false; };
   }, [id]);
 
   if (loading) return (

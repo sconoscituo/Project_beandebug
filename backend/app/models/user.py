@@ -24,3 +24,4 @@ class User(Base):
     article_comments = relationship("ArticleComment", back_populates="user", cascade="all, delete-orphan")
     recipe_likes = relationship("RecipeLike", back_populates="user", cascade="all, delete-orphan")
     article_likes = relationship("ArticleLike", back_populates="user", cascade="all, delete-orphan")
+    subscription = relationship("UserSubscription", back_populates="user", uselist=False)

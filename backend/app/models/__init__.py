@@ -7,3 +7,4 @@ from .gear_review import GearReview
 from .comment import RecipeComment, ArticleComment
 from .like import RecipeLike, ArticleLike
 from .featured import BeanOfTheMonth, FeaturedRecipe
+from .subscription import SubscriptionPlan, UserSubscription, PlanType

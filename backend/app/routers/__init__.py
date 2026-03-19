@@ -4,3 +4,4 @@ from .recipes import router as recipes_router
 from .articles import router as articles_router
 from .gears import router as gears_router
 from .featured import router as featured_router
+from .subscriptions import router as subscriptions_router

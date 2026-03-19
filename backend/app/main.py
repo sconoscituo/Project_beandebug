@@ -8,7 +8,7 @@ from .database.connection import engine, Base, settings, get_db
 from .routers import (
     auth_router, beans_router, recipes_router,
     articles_router, gears_router, featured_router,
-    subscriptions_router
+    subscriptions_router, ai_debug_router
 )
 from .core.config import get_global_config
 from .core.logging import setup_logging, get_logger
@@ -52,6 +52,7 @@ app.include_router(articles_router)
 app.include_router(gears_router)
 app.include_router(featured_router)
 app.include_router(subscriptions_router)
+app.include_router(ai_debug_router)
 
 
 @app.get("/")
